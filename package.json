@@ -1,0 +1,31 @@
+{
+  "name": "getusermedia",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Seth MacPherson <smacpherson@barkleyus.com> (http://barkleyus.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "browserify-ejs": "0.0.2",
+    "browserify-shim": "^3.8.11",
+    "gulp": "^3.9.0",
+    "gulp-eta": "^0.5.1"
+  },
+  "dependencies": {
+    "gulp-eta": "^0.5.1",
+    "sassqwatch": "^0.7.4"
+  },
+  "description": "",
+  "browser": {
+    "waitFor": "./_src/js/lib/waitFor.js"
+  },
+  "browserify-shim": {
+    "jquery": "global:$"
+  }
+}

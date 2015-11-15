@@ -1,0 +1,25 @@
+// ================================
+// Main
+// ================================
+
+main {
+
+}
+
+video,
+img {
+    height: auto;
+    width: 80vw;
+    display: inline-block;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: -5px;
+}
+
+video {
+    width: 300px;
+}
+
+canvas {
+    display: none;
+}
