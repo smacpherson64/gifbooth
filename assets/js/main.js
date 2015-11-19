@@ -325,15 +325,15 @@ waitFor('body', function() {
                 'not_supported' : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
             },
             'userAction' : {
-                'capture'       : function() { ga('send', 'event', 'capture-frame', 'trigger') },
-                'delete'        : function() { ga('send', 'event', 'delete-gif', 'trigger') },
-                'remove'        : function() { ga('send', 'event', 'remove-frame', 'trigger') },
-                'render'        : function() { ga('send', 'event', 'render-gif', 'trigger') },
-                'frames'        : function( status ) { ga('send', 'event', 'toggle-frames', 'trigger', 'status', status ) },
-                'preview'       : function( status ) { ga('send', 'event', 'invert-preview', 'trigger', 'status', status ) },
-                'download'      : function( details ) { ga('send', 'event', 'download-gif', 'trigger', 'details', details ) },
-                'speed'         : function( value ) { ga('send', 'event', 'update-speed', 'trigger', 'value', value )},
-                'sort'          : function() { ga('send', 'event', 'sort-frame', 'trigger' )}
+                'capture'       : function() { ga('send', 'event', 'action', 'Capture Frame') },
+                'delete'        : function() { ga('send', 'event', 'action', 'Delete GIF') },
+                'remove'        : function() { ga('send', 'event', 'action', 'Remove Frame') },
+                'render'        : function() { ga('send', 'event', 'action', 'Render GIF') },
+                'frames'        : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status, 'true' ) },
+                'preview'       : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status, 'true' ) },
+                'download'      : function( details ) { ga('send', 'event', 'action', 'Download GIF', 'details', details ) },
+                'speed'         : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', 'value', value )},
+                'sort'          : function() { ga('send', 'event', 'action', 'Sort Frames' )}
             }
         }
 
