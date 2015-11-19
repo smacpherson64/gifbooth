@@ -9,7 +9,7 @@ module.exports = [
   {
     outputName: 'main.js',
     entries: [
-      './modules/app.js'
+        './modules/app.js'
     ]
-  },
+  }
 ];

@@ -7,32 +7,84 @@
 
   <title>Get User Media</title>
 
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+  <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>-->
   <link rel="stylesheet" href="style.css" media="screen" />
 </head>
 
 <body class="landing-home">
 
-    <header class="sample-header">
-        <h1>Forty Eta</h1>
+    <header>
+        <h1>GIFBooth</h1> - 
+        <p><em>Homemade Moving Pictures</em></p>
     </header>
 
-    <main>
-        <video autoplay height="720" width="1280"></video>
-        <canvas height="720" width="1280"></canvas>
-        <img height="720" width="1280">
+
+
+    <main class="app">
+        <div class="view">
+            <div class="loading">
+                <div class="content">
+                    <img src="assets/images/loading.svg" class="indicator">
+                    <span class="percent"></span>
+                </div>
+            </div>
+
+            <div class="live-wrapper">
+                <span class="js-invert-preview invert-preview"><i class="symbol s-switch"></i></span>
+                <video autoplay height="720" width="1280" class="live"></video>
+            </div>
+
+            <div class="preview-wrapper">
+                <span class="js-invert-preview invert-preview"><i class="symbol s-switch"></i></span>
+                <img height="720" width="1280" class="preview" src="data:image/gif;base64,R0lGODlhEAAJAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAAQAAkAAAIKlI+py+0Po5yUFQA7">
+            </div>
+
+            <canvas height="720" width="1280" class="capture"></canvas>
+
+            <div class="no-images active">
+                <i class="symbol s-pictures"></i>
+            </div>
+        </div>
+
+        <div class="frame-wrapper">
+            <div class="frames"></div>
+        </div>
 
         <ul class="controls">
+            <li class="control control-toggles divider wide disabled">
+                <input id="render-speed" class="js-control-speed" type="range" value="100" min="50" max="300" step="10">
+                <label for="render-speed" class="render-speed-label"><strong>SPEED: </strong><span class="value">100</span>ms</label>
+            </li>
 
+            <li class="control">
+                <div class="js-frames-capture button large round" title="Capture GIF Frame"><span class="visually-hidden">Capture Frame</span><i data-label="capture" class="symbol s-camera"></i></div>
+            </li>
+
+            <li class="control control-toggles disabled">
+                <div class="js-frames-render button large round" title="Re-render GIF"><span class="visually-hidden">Re-render GIF</span><i data-label="render" class="symbol s-reload"></i></div>
+            </li>
+
+            <li class="control control-toggles disabled">
+                <div class="js-view-toggle-frames button large round" title="View GIF Frames"><span class="visually-hidden">View GIF Frames</span><i data-label="frames" class="symbol s-frames"></i></div>
+            </li>
+
+            <li class="control control-toggles disabled">
+                <a class="js-download-image download button large round green" title="Download GIF" href="#" download="giffed"><span class="visually-hidden">Download Current GIF</span><i data-label="save" class="symbol s-download"></i></a>
+            </li>
+
+            <li class="control control-toggles disabled">
+                <div class="js-frames-delete-all button large round red" title="Delete Current GIF"><span class="visually-hidden">Delete Current GIF</span><i data-label="trash" class="symbol s-garbage"></i></div>
+            </li>
         </ul>
     </main>
 
-    <footer>
+	<footer></footer>
 
-    </footer>
-
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="jquery.sortable.min.js"></script>
+    <script src="gif.js"></script>
 	<script src="assets/js/main.js"></script>
 </body>
 
 </html>
+

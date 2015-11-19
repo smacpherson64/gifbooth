@@ -1,10 +1,10 @@
 @font-face {
 	font-family: "symbols";
-	src: url('symbols.eot');
-	src: url('symbols.eot?#iefix') format('eot'),
-		url('symbols.woff') format('woff'),
-		url('symbols.ttf') format('truetype'),
-		url('symbols.svg#symbols') format('svg');
+	src: url('/symbols.eot');
+	src: url('/symbols.eot?#iefix') format('eot'),
+		url('/symbols.woff') format('woff'),
+		url('/symbols.ttf') format('truetype'),
+		url('/symbols.svg#symbols') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -27,3 +27,11 @@
 
 .s-book:before { content: "\E001" }
 .s-briefcase:before { content: "\E002" }
+.s-camera:before { content: "\E003" }
+.s-delete:before { content: "\E004" }
+.s-download:before { content: "\E005" }
+.s-frames:before { content: "\E006" }
+.s-garbage:before { content: "\E007" }
+.s-pictures:before { content: "\E008" }
+.s-reload:before { content: "\E009" }
+.s-switch:before { content: "\E00A" }

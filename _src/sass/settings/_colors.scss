@@ -7,18 +7,25 @@
 // --------------------------------
 
 $colors: (
-	black: #2C3E50,
-	white: #fff,
+	black: #171817,
+	white: #ffffff,
 	gray: (
-		base: #999,
-		light: #ccc,
-		dark: #333
+        base: #2B2E2B,
+        light: #222,
+        dark: #111,
+    ),
+
+	blue: (
+		base: #3C6B9E,
+		light: #2E4059,
+		dark: #30527F
 	),
-	teal: (
-		base: #139397,
-		light: #33afb3,
-		dark: #264d4e
-	)
+
+    red: (
+        base: #E42A42,
+        light: #E25A6A,
+        dark: #AA2029
+    )
 );
 
 

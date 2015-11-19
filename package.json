@@ -15,7 +15,8 @@
     "browserify-ejs": "0.0.2",
     "browserify-shim": "^3.8.11",
     "gulp": "^3.9.0",
-    "gulp-eta": "^0.5.1"
+    "gulp-eta": "^0.5.1",
+    "jquery": "^2.1.4"
   },
   "dependencies": {
     "gulp-eta": "^0.5.1",

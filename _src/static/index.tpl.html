@@ -2,132 +2,63 @@
   "body_class": "landing-home"
 })
 
-  <div class="col-wrap">
-    <div class="sample-sprites">
-      <h2>Sprite Sample</h2>
-      <i class="icon-one"></i>
-      <i class="icon-two"></i>
-    </div>
-    <div class="sample-symbols">
-      <h2>Symbol Sample</h2>
-      <i class="symbol-one"></i>
-      <i class="symbol-two"></i>
-    </div>
-  </div>
 
-  <div class="col-wrap">
-    <div class="wysiwyg">
-      <h1>A Visual Type Scale</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec diam nec velit sodales pulvinar sed non augue. Sed id mauris congue tortor gravida varius. Sed scelerisque ipsum magna, sed maximus ipsum ornare quis. <a href="#">Nulla ultricies</a> fusce eros quam, malesuada vel viverra eu, porta a nisi. Nunc arcu, at finibus felis bibendum vitae. Aenean in sodales metus, in efficitur lectus. Phasellus ex turpis, efficitur sit amet lacinia et, ullamcorper eu mi. Aenean eget diam dapibus, rutrum magna quis, efficitur est.
-      </p>
-      <h3>A Visual Type Scale</h3>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec diam nec velit sodales pulvinar sed non augue. Sed id mauris congue tortor gravida varius. Sed scelerisque ipsum magna, sed maximus ipsum ornare quis. Fusce eros quam, malesuada vel viverra eu, porta a nisi. Nulla ultricies nunc arcu, at finibus felis bibendum vitae. Aenean in sodales metus, in efficitur lectus. Phasellus ex turpis, efficitur sit amet lacinia et, ullamcorper eu mi. Aenean eget diam dapibus, rutrum magna quis, efficitur est.
-      </p>
-      <ol>
-        <li>Nunc vel ligula in nulla pellentesque ultricies at sed magna.</li>
-        <li>Fusce ac sapien at risus faucibus ultrices eu sed mauris.</li>
-        <li>Nam consectetur mi sit amet neque accumsan accumsan.</li>
-        <li>In sit amet mauris at eros rhoncus viverra.</li>
-        <li>Nunc congue odio finibus velit suscipit, eu lobortis nulla rhoncus.</li>
-      </ol>
-      <h5>A Visual Type Scale</h5>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec diam nec velit sodales pulvinar sed non augue. Sed id mauris congue tortor gravida varius. Sed scelerisque ipsum magna, sed maximus ipsum ornare quis. Fusce eros quam, malesuada vel viverra eu, porta a nisi. Nulla ultricies nunc arcu, at finibus felis bibendum vitae. Aenean in sodales metus, in efficitur lectus. Phasellus ex turpis, efficitur sit amet lacinia et, ullamcorper eu mi. Aenean eget diam dapibus, rutrum magna quis, efficitur est.
-      </p>
-      <ul>
-        <li>Nunc vel ligula in nulla pellentesque ultricies at sed magna.</li>
-        <li>Fusce ac sapien at risus faucibus ultrices eu sed mauris.</li>
-        <li>Nam consectetur mi sit amet neque accumsan accumsan.</li>
-        <li>In sit amet mauris at eros rhoncus viverra.</li>
-        <li>Nunc congue odio finibus velit suscipit, eu lobortis nulla rhoncus.</li>
-      </ul>
-      <p>
-        Nulla scelerisque maximus augue, vel dapibus nisi aliquam at. Proin ac porta nisi, at faucibus elit. Morbi auctor blandit libero, luctus aliquet lorem pellentesque in. Vivamus posuere lobortis dui a ornare. Nullam tincidunt est imperdiet dui semper, vitae dignissim mauris congue. Maecenas justo magna, tempor et aliquam viverra, aliquam vitae ipsum. Donec ultrices diam leo, quis dictum neque condimentum in. Ut tincidunt neque eu tempus sollicitudin. Maecenas et mi quam. Praesent porttitor mauris sit amet semper accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque placerat fringilla nisi, quis condimentum mauris rhoncus sed.
-      </p>
-    </div>
-  </div>
+    <main class="app">
+        <div class="view">
+            <div class="loading">
+                <div class="content">
+                    <img src="assets/images/loading.svg" class="indicator">
+                    <span class="percent"></span>
+                </div>
+            </div>
 
-  <div class="grid-samples">
+            <div class="live-wrapper">
+                <span class="js-invert-preview invert-preview"><i class="symbol s-switch"></i></span>
+                <video autoplay height="720" width="1280" class="live"></video>
+            </div>
 
-    <h2>Susy Grids</h2>
+            <div class="preview-wrapper">
+                <span class="js-invert-preview invert-preview"><i class="symbol s-switch"></i></span>
+                <img height="720" width="1280" class="preview" src="data:image/gif;base64,R0lGODlhEAAJAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAAQAAkAAAIKlI+py+0Po5yUFQA7">
+            </div>
 
-    <h4>Basic Grid</h4>
+            <canvas height="720" width="1280" class="capture"></canvas>
 
-    <section class="grid-basic row">
-      <code>@include container(1200px);</code>
-      <div class="item">
-        <code>@include span(5 of 10);</code>
-      </div>
-      <div class="item">
-        <code>@include span(5 of 10 last);<br></code>
-      </div>
-    </section>
+            <div class="no-images active">
+                <i class="symbol s-pictures"></i>
+            </div>
+        </div>
 
-    <h4>Multiple Grids</h4>
+        <div class="frame-wrapper">
+            <div class="frames"></div>
+        </div>
 
-    <section class="grid-multiple row">
-      <code>@include container(1200px);</code>
-      <div class="item-1">
-        <code>(1)</code>
-      </div>
-      <div class="item-2">
-        <code>@include span(11 of 12 last);</code>
-      </div>
-      <div class="item-3">
-        <code>(2)</code>
-      </div>
-      <div class="item-4">
-        <code>@include span(10 of 12 last);</code>
-      </div>
-      <div class="item-5">
-        <code>@include span(3 of 12);</code>
-      </div>
-      <div class="item-6">
-        <code>@include span(9 of 12 last);</code>
-      </div>
-      <div class="item-7">
-        <code>@include span(4 of 12);</code>
-      </div>
-      <div class="item-8">
-        <code>@include span(8 of 12 last);</code>
-      </div>
-      <div class="item-9">
-        <code>@include span(5 of 12);</code>
-      </div>
-      <div class="item-10">
-        <code>@include span(7 of 12 last);</code>
-      </div>
-      <div class="item-11">
-        <code>@include span(6 of 12);</code>
-      </div>
-      <div class="item-12">
-        <code>@include span(6 of 12 last);</code>
-      </div>
-    </section>
+        <ul class="controls">
+            <li class="control control-toggles divider wide disabled">
+                <input id="render-speed" class="js-control-speed" type="range" value="100" min="50" max="300" step="10">
+                <label for="render-speed" class="render-speed-label"><strong>SPEED: </strong><span class="value">100</span>ms</label>
+            </li>
 
-    <h4>Nested Grids</h4>
+            <li class="control">
+                <div class="js-frames-capture button large round" title="Capture GIF Frame"><span class="visually-hidden">Capture Frame</span><i data-label="capture" class="symbol s-camera"></i></div>
+            </li>
 
-    <section class="grid-nested row">
-      <code>@include container(1200px);</code>
-      <div class="item-1">
-        <code>@include span(3 of 9);</code>
-      </div>
-      <div class="item-2">
-        <code>@include span(6 of 9);</code>
-        <aside>
-          <code>@include span(4 of 8);</code>
-        </aside>
-        <article>
-          <code>@include span(4 of 8 last);</code>
-        </article>
-      </div>
-    </section>
+            <li class="control control-toggles disabled">
+                <div class="js-frames-render button large round" title="Re-render GIF"><span class="visually-hidden">Re-render GIF</span><i data-label="render" class="symbol s-reload"></i></div>
+            </li>
 
-  </div>
+            <li class="control control-toggles disabled">
+                <div class="js-view-toggle-frames button large round" title="View GIF Frames"><span class="visually-hidden">View GIF Frames</span><i data-label="frames" class="symbol s-frames"></i></div>
+            </li>
 
+            <li class="control control-toggles disabled">
+                <a class="js-download-image download button large round green" title="Download GIF" href="#" download="giffed"><span class="visually-hidden">Download Current GIF</span><i data-label="save" class="symbol s-download"></i></a>
+            </li>
 
-  <div class="sassqwatch"></div>
+            <li class="control control-toggles disabled">
+                <div class="js-frames-delete-all button large round red" title="Delete Current GIF"><span class="visually-hidden">Delete Current GIF</span><i data-label="trash" class="symbol s-garbage"></i></div>
+            </li>
+        </ul>
+    </main>
 
 @@include('./partials/_footer.html')
