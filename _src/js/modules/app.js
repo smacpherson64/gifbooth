@@ -45,7 +45,6 @@ waitFor('body', function() {
                 width: 1280,
                 height: 720,
             }
-
         };
 
 
@@ -311,10 +310,10 @@ waitFor('body', function() {
                 'delete'        : function() { ga('send', 'event', 'action', 'Delete GIF') },
                 'remove'        : function() { ga('send', 'event', 'action', 'Remove Frame') },
                 'render'        : function() { ga('send', 'event', 'action', 'Render GIF') },
-                'frames'        : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status, 'true' ) },
-                'preview'       : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status, 'true' ) },
-                'download'      : function( details ) { ga('send', 'event', 'action', 'Download GIF', 'details', details ) },
-                'speed'         : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', 'value', value )},
+                'frames'        : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status ) },
+                'preview'       : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status ) },
+                'download'      : function( details ) { ga('send', 'event', 'action', 'Download GIF', details ) },
+                'speed'         : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value )},
                 'sort'          : function() { ga('send', 'event', 'action', 'Sort Frames' )}
             }
         }
