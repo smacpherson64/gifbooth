@@ -63,7 +63,6 @@ waitFor('body', function() {
                 width: 1280,
                 height: 720,
             }
-
         };
 
 
@@ -138,6 +137,7 @@ waitFor('body', function() {
                 var new_speed = $(target).val()
                 settings.speed = new_speed;
                 $('.render-speed-label').find('.value').text( new_speed );
+                return new_speed;
             },
 
             'render' : function(){
@@ -273,10 +273,10 @@ waitFor('body', function() {
         });
 
         $root.on( 'gif-update-speed', function( event, target ) {
-            actions.update_gif_speed( target );
+            var value = actions.update_gif_speed( target );
             actions.render();
 
-            report.userAction.speed();
+            report.userAction.speed( value );
         });
 
         $root.on( 'gif-frames-render', function( event, target ) {
@@ -329,10 +329,10 @@ waitFor('body', function() {
                 'delete'        : function() { ga('send', 'event', 'action', 'Delete GIF') },
                 'remove'        : function() { ga('send', 'event', 'action', 'Remove Frame') },
                 'render'        : function() { ga('send', 'event', 'action', 'Render GIF') },
-                'frames'        : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status, 'true' ) },
-                'preview'       : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status, 'true' ) },
-                'download'      : function( details ) { ga('send', 'event', 'action', 'Download GIF', 'details', details ) },
-                'speed'         : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', 'value', value )},
+                'frames'        : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status ) },
+                'preview'       : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status ) },
+                'download'      : function( details ) { ga('send', 'event', 'action', 'Download GIF', details ) },
+                'speed'         : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value ) },
                 'sort'          : function() { ga('send', 'event', 'action', 'Sort Frames' )}
             }
         }

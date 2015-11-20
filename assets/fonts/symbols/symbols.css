@@ -30,8 +30,10 @@
 .s-camera:before { content: "\E003" }
 .s-delete:before { content: "\E004" }
 .s-download:before { content: "\E005" }
-.s-frames:before { content: "\E006" }
-.s-garbage:before { content: "\E007" }
-.s-pictures:before { content: "\E008" }
-.s-reload:before { content: "\E009" }
-.s-switch:before { content: "\E00A" }
+.s-fast:before { content: "\E006" }
+.s-frames:before { content: "\E007" }
+.s-garbage:before { content: "\E008" }
+.s-pictures:before { content: "\E009" }
+.s-reload:before { content: "\E00A" }
+.s-slow:before { content: "\E00B" }
+.s-switch:before { content: "\E00C" }

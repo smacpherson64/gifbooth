@@ -63,20 +63,26 @@
 	@if $symbol == "download" {
 		content: '\E005';
 	}
-	@if $symbol == "frames" {
+	@if $symbol == "fast" {
 		content: '\E006';
 	}
-	@if $symbol == "garbage" {
+	@if $symbol == "frames" {
 		content: '\E007';
 	}
-	@if $symbol == "pictures" {
+	@if $symbol == "garbage" {
 		content: '\E008';
 	}
-	@if $symbol == "reload" {
+	@if $symbol == "pictures" {
 		content: '\E009';
 	}
-	@if $symbol == "switch" {
+	@if $symbol == "reload" {
 		content: '\E00A';
+	}
+	@if $symbol == "slow" {
+		content: '\E00B';
+	}
+	@if $symbol == "switch" {
+		content: '\E00C';
 	}
 }
 
@@ -86,8 +92,10 @@
 .s-camera:before { content: "\E003" }
 .s-delete:before { content: "\E004" }
 .s-download:before { content: "\E005" }
-.s-frames:before { content: "\E006" }
-.s-garbage:before { content: "\E007" }
-.s-pictures:before { content: "\E008" }
-.s-reload:before { content: "\E009" }
-.s-switch:before { content: "\E00A" }
+.s-fast:before { content: "\E006" }
+.s-frames:before { content: "\E007" }
+.s-garbage:before { content: "\E008" }
+.s-pictures:before { content: "\E009" }
+.s-reload:before { content: "\E00A" }
+.s-slow:before { content: "\E00B" }
+.s-switch:before { content: "\E00C" }

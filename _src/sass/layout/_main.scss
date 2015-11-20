@@ -402,6 +402,23 @@ canvas {
 }
 
 
+.speed-icon {
+    font-size: 1em;
+    vertical-align: middle;
+    margin-right: -5px;
+    color: #777;
+
+    &.slow {
+        // Adjusting for differences in SVG size
+        font-size: 1.3em;
+        top: 3px;
+    }
+}
+
+input.speed-control {
+    width: calc(100% - 4em);
+    margin-right: -5px;
+}
 
 .render-speed-label {
     display: block;
