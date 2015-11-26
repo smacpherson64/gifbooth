@@ -1,0 +1,268 @@
+// ================================
+// Main View
+// ================================
+
+
+// --------------------------------
+// Preview View
+// --------------------------------
+
+.preview-wrapper {
+    background-color: rgba(0,0,0,.2);
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    z-index: 1;
+    border: none;
+    top: 0;
+    left: 0;
+
+    .view.invert & {
+        top: inherit;
+        left: inherit;
+        bottom: 2vw;
+        right: 2vw;
+        height: 14.0625vw;
+        width: 25vw;
+        z-index: 10;
+        border: 1px solid setcolor(gray, light);
+
+        .invert-preview {
+            display: inline-block;
+        }
+    }
+
+    .invert-preview {
+        display: none;
+    }
+
+    > .preview {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    &::before {
+        position: absolute;
+        top: rem(2px);
+        right: rem(2px);
+        opacity: .8;
+        font-size: rem(7px);
+        color: setcolor(blue, base);
+        border: 1px solid setcolor(blue, base);
+        background-color: setcolor(white);
+        padding: rem(1px) rem(3px);
+        content: "GIF";
+        font-weight: bold;
+        z-index: 2;
+    }
+}
+
+
+
+
+// --------------------------------
+// Live View
+// --------------------------------
+
+.live-wrapper {
+    background-color: rgba(0,0,0,.5);
+    position: absolute;
+    bottom: 2vw;
+    right: 2vw;
+    height: 14.0625vw;
+    display: inline-block;
+    width: 25vw;
+    z-index: 10;
+    border: 1px solid setcolor(gray, light);
+
+    .view.invert & {
+        bottom: inherit;
+        right: inherit;
+        left: 0;
+        top: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        border: none;
+
+        .invert-preview {
+            display: none;
+        }
+    }
+
+    > .live {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    &::before {
+        position: absolute;
+        top: rem(2px);
+        right: rem(2px);
+        opacity: .8;
+        font-size: rem(7px);
+        color: setcolor(red, base);
+        border: 1px solid setcolor(red, base);
+        background-color: setcolor(white);
+        padding: rem(1px) rem(3px);
+        content: "LIVE";
+        font-weight: bold;
+        z-index: 2;
+    }
+
+    .ghost-overlay {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        z-index: 1;
+        opacity: 0;
+    }
+
+    .overlay-controls {
+        position: absolute;
+        left: calc(100% - 2.4em);
+        width: 2em;
+        top: rem(17px);
+        font-size: 12px;
+        z-index: 5;
+
+        i {
+            display: block;
+        }
+    }
+}
+
+
+
+
+// --------------------------------
+// View Switcher
+// --------------------------------
+
+.invert-preview {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1em;
+    height: 1.5em;
+    width: 1.5em;
+    z-index: 2;
+    background-color: setcolor(black);
+    position: absolute;
+
+    i {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+
+
+
+// --------------------------------
+// View Container
+// --------------------------------
+
+.view {
+    margin: 0 auto;
+    padding: 2vw;
+    background-color: setcolor(black);
+    width: 100%;
+    max-width: 139vh;
+
+    &::after {
+        content: "";
+        display: block;
+        padding-top: 56%;
+        height: 0;
+        width: 0;
+    }
+}
+
+
+
+
+// --------------------------------
+// Loading Screen
+// --------------------------------
+
+.loading {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.7);
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+
+    &.active {
+        display: block;
+    }
+
+    .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 8vw;
+        height: auto;
+
+        > * {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+
+    .percent {
+        display: block;
+        padding: 1vw;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        color: setcolor(white);
+    }
+}
+
+
+
+
+// --------------------------------
+// No Images Visible in View
+// --------------------------------
+
+.no-images {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    color: setcolor(blue, dark);
+
+
+    i.symbol {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 150px;
+    }
+
+    &.active {
+        display: block;
+    }
+}

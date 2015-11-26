@@ -2,6 +2,35 @@
 module.exports = function() { return !!(navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia); }
 
 },{}],2:[function(require,module,exports){
+module.exports = function() {
+    // Adapted from David Walsh (https://davidwalsh.name/page-visibility) who Adpated from Sam Dutton
+
+    (function($){
+        var visibilityChange,
+            status;
+
+        if (typeof document.hidden !== "undefined") {
+        	visibilityChange = "visibilitychange";
+            status = "hidden";
+        } else if (typeof document.mozHidden !== "undefined") {
+        	visibilityChange = "mozvisibilitychange";
+            status = "mozHidden";
+        } else if (typeof document.msHidden !== "undefined") {
+        	visibilityChange = "msvisibilitychange";
+            status = "msHidden";
+        } else if (typeof document.webkitHidden !== "undefined") {
+        	visibilityChange = "webkitvisibilitychange";
+            status = "webkitHidden";
+        }
+
+        document.addEventListener(visibilityChange, function(){ $(document).trigger('page-visibility-change', [document[status]]) }, false);
+
+        return status;
+    })(jQuery);
+
+}
+
+},{}],3:[function(require,module,exports){
 /**
  * waitFor
  * @param  {String}   selector DOM element to check for on every page load
@@ -15,11 +44,13 @@ module.exports = function(selector, callback) {
     return false;
   }
 };
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var waitFor = require('waitFor'),
-    userMedia = require('../lib/getUserMediaTest');
+    userMedia = require('../lib/get-user-media'),
+    watchPageVisiblity = require('../lib/page-visiblity');
 
 waitFor('body', function() {
+
     (function($){
 
         // =========================
@@ -32,7 +63,9 @@ waitFor('body', function() {
             $frames = $('.frames', $root),
             $preview = $('.preview', $root),
             $download = $('.download', $root),
-            $controls = $('.controls'),
+            $controls = $('.js-controls'),
+            $ghost = $('.ghost-overlay'),
+            $upload = $('.js-file-upload'),
 
             canvas = $capture[0],
             ctx = canvas.getContext('2d'),
@@ -66,6 +99,11 @@ waitFor('body', function() {
         };
 
 
+        var status = {
+            'upload': {}
+        }
+
+
 
 
         // =========================
@@ -74,10 +112,56 @@ waitFor('body', function() {
 
         var actions = {
 
+            'upload_files' : function() {
+
+                var now = new Date();
+                var time = now.getTime();
+                var upload = $upload[0];
+                var files = upload.files;
+
+                status.upload[now] = {};
+                status.upload[now].total = files.length;
+                status.upload[now].current = 0;
+
+                for (var i = 0, file; file = files[i]; i++) {
+
+                    if ( !file.type.match('image.*')) {
+                        status.upload[now].current++;
+                        continue;
+                    }
+
+                    var reader = new FileReader();
+
+                    reader.onload = (function( fileURL ) {
+                        return function(event) {
+                            actions.add_frame( event.target.result );
+                            status.upload[now].current++;
+                        };
+                    })( file );
+
+                    reader.readAsDataURL( file );
+                }
+
+                status.upload.trigger = setInterval( function(){
+                    if ( status.upload.current == status.upload.total ) {
+                        $root.trigger('gif-upload-complete');
+                        clearInterval(status.upload.trigger)
+                    } else {
+                        console.log('Loading: ' + status.upload.current + ' of ' + status.upload.total);
+                    }
+                }, 100 );
+            },
+
+            'add_frame' : function( image ) {
+                $frames.append('<li class="frame-container"><span class="js-frames-remove-one remove"><i class="symbol s-delete"></i></span><img height="720" width="1280" class="frame" src="' + image + '"></div>');
+                $frames.sortable({ forcePlaceholderSize: true }).bind('sortupdate', trigger.sort);
+            },
+
             'capture_frame' : function() {
                 if (localMediaStream) {
                     ctx.drawImage($live[0], 0, 0);
-                    $frames.append('<li class="frame-container"><span class="js-frames-remove-one remove"><i class="symbol s-delete"></i></span><img height="720" width="1280" class="frame" src="' + canvas.toDataURL('image/jpeg') + '"></div>');
+                    var image = canvas.toDataURL('image/jpeg');
+                    $frames.append('<li class="frame-container"><span class="js-frames-remove-one remove"><i class="symbol s-delete"></i></span><img height="720" width="1280" class="frame" src="' + image + '"></div>');
                     $frames.sortable({ forcePlaceholderSize: true }).bind('sortupdate', trigger.sort);
                 }
             },
@@ -88,13 +172,18 @@ waitFor('body', function() {
             },
 
             'close_frames_view' : function() {
-                $('.frame-wrapper').removeClass('active');
+                $('.frame-wrapper, .js-view-toggle-frames').removeClass('active');
+            },
+
+            'clear_preview': function() {
+                $preview.attr('src', settings.default_image);
             },
 
             'toggle_frames_view' : function() {
-                var $frames = $('.frame-wrapper');
-                $frames.toggleClass('active');
-                return $frames.hasClass('active') ? 'open' : 'close' ;
+                var $targets = $('.frame-wrapper, .js-view-toggle-frames');
+                $targets.toggleClass('active');
+
+                return $targets.hasClass('active') ? 'open' : 'close';;
             },
 
             'activate_controls' : function () {
@@ -127,6 +216,27 @@ waitFor('body', function() {
                 return $download.attr('data-details');
             },
 
+            'update_overlay_opacity' : function( target ) {
+                var $toggle = $(target);
+                $toggle.toggleClass('active');
+                var isActive = $toggle.hasClass('active');
+
+                if ( isActive ) {
+                    $ghost.css('opacity', '.4');
+                } else {
+                    $ghost.css('opacity', '0');
+                }
+                return isActive;
+            },
+
+            'update_overlay_src': function(){
+                if ( actions.get_frame_count() > 0 ) {
+                    $ghost.attr('src', $('.frame-container:last-child img').attr('src'));
+                } else {
+                    $ghost.attr('src', settings.default_image);
+                }
+            },
+
             'invert_preview' : function() {
                 var $view = $('.view', $root);
                 $view.toggleClass('invert');
@@ -138,6 +248,28 @@ waitFor('body', function() {
                 settings.speed = new_speed;
                 $('.render-speed-label').find('.value').text( new_speed );
                 return new_speed;
+            },
+
+            'stop_live': function( status ) {
+                var isHidden = status;
+
+                if (isHidden) {
+
+                    if ( typeof localMediaStream.getAudioTracks != "undefined" ){
+                        localMediaStream.getAudioTracks().forEach(function( value ){ value.stop(); });
+                    }
+
+                    if ( typeof localMediaStream.getVideoTracks != "undefined" ) {
+                        localMediaStream.getVideoTracks().forEach(function( value ){ value.stop(); });
+                    }
+
+                    if ( typeof localMediaStream.stop != "undefined" ) {
+                        localMediaStream.stop();
+                    }
+
+                } else {
+                    initalizeVideo();
+                }
             },
 
             'render' : function(){
@@ -210,15 +342,17 @@ waitFor('body', function() {
         // =========================
 
         var trigger = {
-            'capture'       : function() { $root.trigger('gif-frames-capture') },
-            'delete_all'    : function() { $root.trigger('gif-frames-delete-all') },
-            'render'        : function() { $root.trigger('gif-frames-render') },
-            'remove_one'    : function() { $root.trigger('gif-frames-remove-one', [ this ]) },
-            'invert'        : function() { $root.trigger('gif-view-invert') },
-            'toggle'        : function() { $root.trigger('gif-view-frames') },
-            'update_speed'  : function() { $root.trigger('gif-update-speed', [ this ]) },
-            'download'      : function() { $root.trigger('gif-download') },
-            'sort'          : function() { $root.trigger('gif-frame-sort') }
+            'capture'           : function() { $root.trigger('gif-frames-capture') },
+            'delete_all'        : function() { $root.trigger('gif-frames-delete-all') },
+            'render'            : function() { $root.trigger('gif-frames-render') },
+            'remove_one'        : function() { $root.trigger('gif-frames-remove-one', [ this ]) },
+            'invert'            : function() { $root.trigger('gif-view-invert') },
+            'toggle'            : function() { $root.trigger('gif-view-frames') },
+            'update_speed'      : function() { $root.trigger('gif-update-speed', [ this ]) },
+            'update_overlay'    : function() { $root.trigger('gif-update-overlay', [ this ]) },
+            'download'          : function() { $root.trigger('gif-download') },
+            'sort'              : function() { $root.trigger('gif-frames-sort') },
+            'upload_files'      : function( event ) { $root.trigger('gif-upload-files'), [ event ]}
         };
 
 
@@ -234,17 +368,19 @@ waitFor('body', function() {
             if ( !settings.controlsActive )
                 actions.activate_controls();
 
+            actions.update_overlay_src();
             actions.render();
 
-            report.userAction.capture();
+            report.app.capture();
         });
 
         $root.on( 'gif-frames-delete-all', function( ) {
             actions.delete_all_frames();
             actions.close_frames_view();
             actions.deactivate_controls();
+            actions.update_overlay_src();
 
-            report.userAction.delete();
+            report.app.delete();
         });
 
         $root.on( 'gif-frames-remove-one', function( event, target ) {
@@ -255,46 +391,73 @@ waitFor('body', function() {
             } else {
                 actions.close_frames_view();
                 actions.deactivate_controls();
+                actions.clear_preview();
             }
 
-            report.userAction.remove();
+            actions.update_overlay_src();
+
+            report.app.remove();
         });
 
         $root.on( 'gif-view-invert', function() {
             var status = actions.invert_preview();
 
-            report.userAction.preview( status );
+            report.app.preview( status );
         });
 
         $root.on( 'gif-view-frames', function() {
             var status = actions.toggle_frames_view();
 
-            report.userAction.frames( status );
+            report.app.frames( status );
         });
 
         $root.on( 'gif-update-speed', function( event, target ) {
             var value = actions.update_gif_speed( target );
             actions.render();
 
-            report.userAction.speed( value );
+            report.app.speed( value );
+        });
+
+        $root.on( 'gif-update-overlay', function( event, target ) {
+            var value = actions.update_overlay_opacity( target );
+
+            report.app.overlay( value );
         });
 
         $root.on( 'gif-frames-render', function( event, target ) {
             actions.render();
 
-            report.userAction.render();
+            report.app.render();
         });
 
         $root.on( 'gif-frames-sort', function() {
             actions.render();
 
-            report.userAction.sort();
+            report.app.sort();
         });
 
         $root.on( 'gif-download', function() {
             var details = actions.get_gif_details();
 
-            report.userAction.download( details );
+            report.app.download( details );
+        });
+
+        $root.on( 'gif-upload-files', function() {
+            actions.upload_files();
+        });
+
+        $root.on( 'gif-upload-complete', function() {
+            console.log('complete');
+
+            if ( !settings.controlsActive )
+                actions.activate_controls();
+
+            actions.update_overlay_src();
+            actions.render();
+        });
+
+        $(document).on( 'page-visibility-change', function( event, status ) {
+            actions.stop_live( status );
         });
 
 
@@ -309,7 +472,9 @@ waitFor('body', function() {
         $root.on( 'click', '.js-view-toggle-frames', trigger.toggle );
         $root.on( 'click', '.js-invert-preview', trigger.invert );
         $root.on( 'click', '.js-download-image', trigger.download );
+        $root.on( 'click', '.js-overlay-toggle', trigger.update_overlay );
         $root.on( 'change', '.js-control-speed', trigger.update_speed );
+        $root.on( 'change', '.js-file-upload', trigger.upload_files )
 
 
 
@@ -319,12 +484,14 @@ waitFor('body', function() {
         // =========================
 
         var report = {
-            'getUserMedia' : {
-                'accept'        : function() { ga('send', 'event', 'getUserMedia', 'accept') },
-                'reject'        : function(err) { ga('send', 'event', 'getUserMedia', 'reject', 'getUserMedia', err) },
-                'not_supported' : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
+            'browser': {
+                'userMedia'     : {
+                    'accept'        : function() { ga('send', 'event', 'getUserMedia', 'accept') },
+                    'reject'        : function(err) { ga('send', 'event', 'getUserMedia', 'reject', 'getUserMedia', err) },
+                    'not_supported' : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
+                },
             },
-            'userAction' : {
+            'app' : {
                 'capture'       : function() { ga('send', 'event', 'action', 'Capture Frame') },
                 'delete'        : function() { ga('send', 'event', 'action', 'Delete GIF') },
                 'remove'        : function() { ga('send', 'event', 'action', 'Remove Frame') },
@@ -333,7 +500,8 @@ waitFor('body', function() {
                 'preview'       : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status ) },
                 'download'      : function( details ) { ga('send', 'event', 'action', 'Download GIF', details ) },
                 'speed'         : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value ) },
-                'sort'          : function() { ga('send', 'event', 'action', 'Sort Frames' )}
+                'sort'          : function() { ga('send', 'event', 'action', 'Sort Frames' )},
+                'overlay'       : function( value ) { ga('send', 'event', 'action', 'Toggle Overlay', value) }
             }
         }
 
@@ -344,28 +512,42 @@ waitFor('body', function() {
         // INITIALIZE
         // =========================
 
-        if ( userMedia() ) {
+        function initalizeVideo() {
+            if ( userMedia() ) {
+                navigator.getUserMedia =    navigator.getUserMedia
+                                         || navigator.webkitGetUserMedia
+                                         || navigator.mozGetUserMedia
+                                         || navigator.msGetUserMedia;
 
-            navigator.getUserMedia =    navigator.getUserMedia
-                                     || navigator.webkitGetUserMedia
-                                     || navigator.mozGetUserMedia
-                                     || navigator.msGetUserMedia;
+                navigator.getUserMedia( settings.video_options, function( stream ) {
+                    var video = document.querySelector('video');
+                    video.src = window.URL.createObjectURL( stream );
+                    video.onloadedmetadata = function(e) {
+                        localMediaStream = stream;
+                    };
+                    report.browser.userMedia.accept();
+                }, function(){
+                    $upload.addClass('active');
+                    $('.js-frames-capture', $root).find('i').attr('data-label', 'upload');
+                    $('.live-wrapper', $root).hide();
+                    report.browser.userMedia.reject();
+                });
+            } else {
+                alert('Sorry! GIFBooth currently requires access to a webcam to operate. Your browser currently does not support this feature.');
+                report.getUserMedia.not_supported();
+            }
+        }
 
-            navigator.getUserMedia( settings.video_options, function( stream ) {
-                var video = document.querySelector('video');
-                video.src = window.URL.createObjectURL( stream );
-                video.onloadedmetadata = function(e) {
-                    localMediaStream = stream;
-                };
-                report.getUserMedia.accept();
-            }, report.getUserMedia.reject );
-        } else {
-            alert('Sorry! GIFBooth currently requires access to a webcam to operate. Your browser currently does not support this feature.');
-            report.getUserMedia.not_supported();
+
+        var pageHidden = watchPageVisiblity();
+
+
+        if ( ! pageHidden ) {
+            initalizeVideo();
         }
 
     })(jQuery);
 
 });
 
-},{"../lib/getUserMediaTest":1,"waitFor":2}]},{},[3]);
+},{"../lib/get-user-media":1,"../lib/page-visiblity":2,"waitFor":3}]},{},[4]);

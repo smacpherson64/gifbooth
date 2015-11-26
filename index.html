@@ -54,7 +54,12 @@
 
             <div class="live-wrapper">
                 <span class="js-invert-preview invert-preview"><i class="symbol s-switch"></i></span>
+                <img class="js-ghost-overlay ghost-overlay" height="720" width="1280">
                 <video autoplay height="720" width="1280" class="live"></video>
+
+                <div class="overlay-controls js-controls">
+                    <div class="js-overlay-toggle button round control control-toggles disabled"><i class="symbol s-overlay"></i></div>
+                </div>
             </div>
 
             <div class="preview-wrapper">
@@ -73,16 +78,17 @@
             <div class="frames"></div>
         </div>
 
-        <ul class="controls">
+        <ul class="js-controls controls">
             <li class="control control-toggles divider wide disabled">
                 <span class="speed-icon fast"><i class="symbol s-fast"></i></span>
-                <input id="render-speed" class="js-control-speed speed-control" type="range" value="100" min="50" max="300" step="10">
+                <input id="render-speed" class="js-control-speed speed-control horizontial" type="range" value="100" min="50" max="300" step="10">
                 <span class="speed-icon slow"><i class="symbol s-slow"></i></span>
                 <label for="render-speed" class="render-speed-label"><strong>SPEED: </strong><span class="value">100</span>ms</label>
             </li>
 
             <li class="control">
                 <div class="js-frames-capture button large round" title="Capture GIF Frame"><span class="visually-hidden">Capture Frame</span><i data-label="capture" class="symbol s-camera"></i></div>
+                <input class="file-upload js-file-upload" id="file-upload" name="file-upload[]" type="file" name="image" accept="image/*" multiple="multiple" capture />
             </li>
 
             <li class="control control-toggles disabled">

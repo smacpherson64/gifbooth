@@ -33,7 +33,8 @@
 .s-fast:before { content: "\E006" }
 .s-frames:before { content: "\E007" }
 .s-garbage:before { content: "\E008" }
-.s-pictures:before { content: "\E009" }
-.s-reload:before { content: "\E00A" }
-.s-slow:before { content: "\E00B" }
-.s-switch:before { content: "\E00C" }
+.s-overlay:before { content: "\E009" }
+.s-pictures:before { content: "\E00A" }
+.s-reload:before { content: "\E00B" }
+.s-slow:before { content: "\E00C" }
+.s-switch:before { content: "\E00D" }

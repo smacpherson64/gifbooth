@@ -1,0 +1,206 @@
+// ================================
+// Control Panel
+// ================================
+
+
+// --------------------------------
+// Control Wrapper
+// --------------------------------
+
+.controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: rem(10px);
+    padding: 1em;
+    width: 100%;
+    background-color: setcolor(gray, base);
+    list-style: none;
+    text-align: center;
+
+    @include mq(medium) {
+        font-size: rem(16px);
+
+    }
+}
+
+
+// --------------------------------
+// Individual Controls
+// --------------------------------
+
+.control {
+    display: inline-block;
+    margin-right: rem(.5em);
+    vertical-align: middle;
+
+    &.disabled {
+        opacity: .2;
+        cursor: not-allowed;
+
+        &::before {
+            position: absolute;
+            top:0;
+            left:0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0,0,0,.001);
+            content: "";
+            z-index: 2;
+        }
+    }
+
+    &.wide {
+        width: 35%;
+    }
+
+    &.divider {
+        margin: 0 auto 2em auto;
+        display: block;
+
+        @include mq(max-mini) {
+            width: 100%;
+        }
+
+        @include mq(small) {
+            display: inline-block;
+            margin-right: rem(1em);
+            padding-right: rem(1em);
+            border-right: 1px solid #111;
+        }
+    }
+}
+
+
+// --------------------------------
+// Control Style Buttons
+// --------------------------------
+
+.button {
+    cursor: pointer;
+    display: block;
+    padding: .2em;
+    font-size: 1em;
+    line-height: 1;
+    height: 2em;
+    width: 2em;
+    background-color: setcolor(blue, base);
+    box-shadow: .1em .1em 0 setcolor(blue, dark);
+
+    &.active {
+        background-color: setcolor(blue, dark);
+    }
+
+    &:link,
+    &:hover,
+    &:active,
+    &:visited {
+        color: setcolor(white);
+    }
+
+    &.large {
+        font-size: 2em;
+    }
+
+    &.round {
+        border-radius: 50%;
+    }
+
+    &.red {
+        background-color: setcolor(red, base);
+        box-shadow: .1em .1em 0 setcolor(red, dark);
+
+        &.active {
+            background-color: setcolor(red, dark);
+        }
+    }
+
+    i {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+
+        @include mq(max-small) {
+            line-height: .7;
+        }
+
+        @include mq(medium) {
+            &::after {
+                transform: translateY(-3px);
+                font-size: rem(8px);
+                text-transform: uppercase;
+                content: attr(data-label);
+                display: block;
+                font-style: normal;
+                font-weight: bold;
+                line-height: .5;
+                text-shadow: 1px 1px 1px rgba(0,0,0,.1);
+            }
+        }
+    }
+
+    i.s-garbage::before {
+        margin-left: rem(3px);
+    }
+
+    &:focus,
+    &:active,
+    &.active {
+        top: .1em;
+        left: .1em;
+        box-shadow: none;
+    }
+}
+
+
+// --------------------------------
+// Speed Slider
+// --------------------------------
+
+.speed-icon {
+    font-size: 1em;
+    vertical-align: middle;
+    margin-right: -5px;
+    color: #777;
+
+    &.slow {
+        // Adjusting for differences in SVG size
+        font-size: 1.3em;
+        top: 3px;
+    }
+}
+
+input.horizontial.speed-control {
+    width: calc(100% - 4em);
+    margin-right: -5px;
+}
+
+.render-speed-label {
+    display: block;
+    font-size: rem(10px);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+
+// --------------------------------
+// Upload Files
+// --------------------------------
+
+.file-upload {
+    display: none;
+    -webkit-appearence: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    opacity: 0;
+
+    &.active {
+        display: block;
+    }
+}
