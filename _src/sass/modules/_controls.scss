@@ -31,7 +31,7 @@
 
 .control {
     display: inline-block;
-    margin-right: rem(.5em);
+    margin-right: rem(2em);
     vertical-align: middle;
 
     &.disabled {
@@ -68,6 +68,10 @@
             padding-right: rem(1em);
             border-right: 1px solid #111;
         }
+    }
+
+    @include mq(small) {
+        margin-right: .5em;
     }
 }
 
@@ -190,6 +194,7 @@ input.horizontial.speed-control {
 // --------------------------------
 
 .file-upload {
+    cursor: pointer;
     display: none;
     -webkit-appearence: none;
     position: absolute;

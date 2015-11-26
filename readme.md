@@ -23,3 +23,5 @@ GIFBooth is an experiment using various Javascript API's to allow users to use l
     - Possible Implementation from http://www.purplesquirrels.com.au/2013/08/webcam-to-canvas-or-data-uri-with-html5-and-javascript/
 
 - ### Fix mobile portrait to have better dimensions as well as setting controls to fit better
+
+- ### Add upload indicator so users know that an action is happening on upload.
