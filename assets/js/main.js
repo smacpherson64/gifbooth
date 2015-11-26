@@ -272,6 +272,12 @@ waitFor('body', function() {
                 }
             },
 
+            'setup_upload_system': function() {
+                $upload.addClass('active');
+                $('.js-frames-capture', $root).find('i').attr('data-label', 'upload');
+                $('.live-wrapper', $root).hide();
+            },
+
             'render' : function(){
                 clearTimeout( window.gifbooth_render );
                 window.gifbooth_render = setTimeout(function(){
@@ -527,13 +533,13 @@ waitFor('body', function() {
                     };
                     report.browser.userMedia.accept();
                 }, function(){
-                    $upload.addClass('active');
-                    $('.js-frames-capture', $root).find('i').attr('data-label', 'upload');
-                    $('.live-wrapper', $root).hide();
+                    actions.setup_upload_system();
+
                     report.browser.userMedia.reject();
                 });
             } else {
-                alert('Sorry! GIFBooth currently requires access to a webcam to operate. Your browser currently does not support this feature.');
+                actions.setup_upload_system();
+
                 report.getUserMedia.not_supported();
             }
         }
