@@ -1,6 +1,6 @@
 {
-  "name": "getusermedia",
-  "version": "1.0.0",
+  "name": "gifbooth",
+  "version": "0.1.1",
   "main": "index.js",
   "directories": {
     "doc": "doc"
@@ -8,7 +8,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Seth MacPherson <smacpherson@barkleyus.com> (http://barkleyus.com/)",
+  "author": "Seth MacPherson",
   "license": "ISC",
   "devDependencies": {
     "browserify": "^12.0.1",
