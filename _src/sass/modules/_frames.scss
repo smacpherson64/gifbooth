@@ -40,16 +40,16 @@
     cursor: pointer;
     color: setcolor(white);
     position: absolute;
-    top: -.5em;
-    right: 0em;
+    top: -.3em;
+    right: .1em;
     z-index: 2;
     background-color: setcolor(red, base);
     border-radius: 50%;
-    height: 1em;
-    width: 1em;
+    height: 1.2em;
+    width: 1.2em;
 
     i {
-        font-size: .7em;
+        font-size: .8em;
         line-height: .5;
         position: absolute;
         left: 50%;

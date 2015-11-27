@@ -2,9 +2,9 @@
 // Header
 // ================================
 
-header {
+header.page-header {
     position: fixed;
-    height: rem(2em);
+    max-height: 3em;
     top: 0;
     left: 0;
     width: 100%;
@@ -18,5 +18,11 @@ header {
     p {
         display: inline-block;
         font-size: rem(12px);
+    }
+
+    .navigation {
+        position: absolute;
+        right: rem(10px);
+        top: rem(7px);
     }
 }

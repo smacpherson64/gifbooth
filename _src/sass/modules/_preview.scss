@@ -18,10 +18,8 @@
     left: 0;
 
     .view.invert & {
-        top: inherit;
-        left: inherit;
-        bottom: 2vw;
-        right: 2vw;
+        top: calc(100% - 15.0625vw);
+        left: calc(100% - 26vw);
         height: 14.0625vw;
         width: 25vw;
         z-index: 10;
@@ -70,8 +68,8 @@
 .live-wrapper {
     background-color: rgba(0,0,0,.5);
     position: absolute;
-    bottom: 2vw;
-    right: 2vw;
+    top: calc(100% - 15.0625vw);
+    left: calc(100% - 26vw);
     height: 14.0625vw;
     display: inline-block;
     width: 25vw;
@@ -79,8 +77,6 @@
     border: 1px solid setcolor(gray, light);
 
     .view.invert & {
-        bottom: inherit;
-        right: inherit;
         left: 0;
         top: 0;
         display: inline-block;
@@ -156,10 +152,11 @@
 .invert-preview {
     cursor: pointer;
     display: inline-block;
-    font-size: 1em;
+    font-size: 1.1em;
     height: 1.5em;
     width: 1.5em;
     z-index: 2;
+    border-radius: 0 0 .3em 0;
     background-color: setcolor(black);
     position: absolute;
 

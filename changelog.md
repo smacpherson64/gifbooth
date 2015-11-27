@@ -1,10 +1,12 @@
 # GIFBooth - Changelog and Updates
 
-### 0.1.4 -
-- ### Made Ghost Icon bigger on preview so it is easier to use
-- ### Fixed small portrait to have better dimensions as well as setting controls to fit better
-- ### Fixed small landscape to have setting controls fit on the screen.
-- ### Fixed issue where iOS clicking on render prompted a file upload.
+### 0.1.4 - Misc styling updates as well as bug fixes
+
+##### Made Ghost Icon bigger on preview so it is easier to use
+##### Fixed small portrait to have better dimensions as well as setting controls to fit better
+##### Fixed small landscape to have setting controls fit on the screen.
+##### Fixed issue where iOS clicking on render prompted a file upload.
+##### Updated size of remove x inside of frame view
 
 ### 0.1.3 - Implementing mediaDevices
 

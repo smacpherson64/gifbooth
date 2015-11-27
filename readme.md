@@ -9,12 +9,6 @@ GIFBooth is an experiment using various Javascript API's to allow users to use l
 
 ## TODOS
 
-
-
-
-
-- ### Update size of remove x inside of frame view
-
 - ### Add upload indicator so users know that an action is happening on upload.
 
 - ### Add options for sharing

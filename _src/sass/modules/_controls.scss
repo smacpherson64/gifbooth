@@ -75,6 +75,10 @@
             padding-right: rem(1em);
             border-right: 1px solid #111;
         }
+
+        @include mq(medium) {
+            margin-bottom: 0;
+        }
     }
 
     @include mq(small) {
@@ -102,6 +106,18 @@
     width: 2em;
     background-color: setcolor(blue, base);
     box-shadow: .1em .1em 0 setcolor(blue, dark);
+    border: none;
+
+    &.square {
+        height: inherit;
+        width: inherit;
+        border-radius: .2em;
+        padding: .75em;
+        color: setcolor(white);
+        font-size: rem(1em);
+        text-transform: uppercase;
+        font-weight: bold;
+    }
 
     &.active {
         background-color: setcolor(blue, dark);
@@ -114,6 +130,10 @@
         color: setcolor(white);
     }
 
+    &.small {
+        font-size: .55em;
+    }
+
     &.large {
         font-size: 2em;
     }
@@ -122,12 +142,30 @@
         border-radius: 50%;
     }
 
+    &.dark-blue {
+        background-color: setcolor(blue, dark);
+        box-shadow: .1em .1em 0 setcolor(gray, dark);
+
+        &.active {
+            background-color: setcolor(blue, dark);
+        }
+    }
+
     &.red {
         background-color: setcolor(red, base);
         box-shadow: .1em .1em 0 setcolor(red, dark);
 
         &.active {
             background-color: setcolor(red, dark);
+        }
+    }
+
+    &.gray {
+        background-color: setcolor(gray, base);
+        box-shadow: .1em .1em 0 setcolor(gray, dark);
+
+        &.active {
+            background-color: setcolor(gray, dark);
         }
     }
 
@@ -167,6 +205,7 @@
         top: .1em;
         left: .1em;
         box-shadow: none;
+        outline: none;
     }
 }
 
