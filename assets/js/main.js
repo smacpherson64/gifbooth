@@ -82,11 +82,19 @@ waitFor('body', function() {
             'isRendering'       : false,
             'controlsActive'    : false,
             'default_image'     : "data:image/gif;base64,R0lGODlhEAAJAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAAQAAkAAAIKlI+py+0Po5yUFQA7",
-            'video_options'       : {
-                'video' : {
-                    'mandatory': {
-                        'minWidth'  : 1280,
-                        'minHeight' : 720
+            'webcam'     : {
+                'mediaDevices' : {
+                    'video' : {
+                        'width'  : { min: 1280 },
+                        'height' : { min: 720 }
+                    }
+                },
+                'getUserMedia' : {
+                    'video' : {
+                        'mandatory': {
+                            'minWidth'  : 1280,
+                            'minHeight' : 720
+                        },
                     }
                 }
             },
@@ -100,6 +108,7 @@ waitFor('body', function() {
 
 
         var status = {
+            'system': '',
             'upload': {}
         }
 
@@ -250,10 +259,10 @@ waitFor('body', function() {
                 return new_speed;
             },
 
-            'stop_live': function( status ) {
-                var isHidden = status;
+            'stop_live': function( visiblity ) {
+                var isHidden = visiblity;
 
-                if (isHidden) {
+                if ( isHidden && status.system === "webcam" ) {
 
                     if ( typeof localMediaStream.getAudioTracks != "undefined" ){
                         localMediaStream.getAudioTracks().forEach(function( value ){ value.stop(); });
@@ -495,9 +504,10 @@ waitFor('body', function() {
         var report = {
             'browser': {
                 'userMedia'     : {
-                    'accept'        : function() { ga('send', 'event', 'getUserMedia', 'accept') },
-                    'reject'        : function(err) { ga('send', 'event', 'getUserMedia', 'reject', err ) },
-                    'not_supported' : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
+                    'accept'            : function() { ga('send', 'event', 'getUserMedia', 'accept') },
+                    'reject'            : function(err) { ga('send', 'event', 'getUserMedia', 'reject', err ) },
+                    'not_supported'     : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
+                    'resolution_issue'  : function() { ga('send', 'event', 'getUserMedia', 'resolution-not-supported') },
                 },
             },
             'app' : {
@@ -524,27 +534,55 @@ waitFor('body', function() {
 
         function initalizeVideo() {
             if ( userMedia() ) {
-                navigator.getUserMedia =    navigator.getUserMedia
-                                         || navigator.webkitGetUserMedia
-                                         || navigator.mozGetUserMedia
-                                         || navigator.msGetUserMedia;
 
-                navigator.getUserMedia( settings.video_options, function( stream ) {
-                    var video = document.querySelector('video');
-                    video.src = window.URL.createObjectURL( stream );
-                    video.onloadedmetadata = function(e) {
-                        localMediaStream = stream;
-                    };
-                    report.browser.userMedia.accept();
-                }, function(){
-                    actions.setup_upload_system();
+                if ( typeof navigator.mediaDevices != "undefined" ) {
+                    navigator.mediaDevices.getUserMedia( settings.webcam.mediaDevices )
+                        .then(function(stream) {
+                            var video = document.querySelector('video');
+                            video.src = window.URL.createObjectURL( stream );
+                            video.onloadedmetadata = function(e) {
+                                localMediaStream = stream;
+                            };
 
-                    report.browser.userMedia.reject();
-                });
+                            status.system = "webcam";
+                            report.browser.userMedia.accept();
+                        })
+                        .catch(function(error) {
+                            if (error.name === 'ConstraintNotSatisfiedError') {
+                                report.browser.userMedia.resolution_issue();
+                            } else if (error.name === 'PermissionDeniedError') {
+                                report.browser.userMedia.reject();
+                            }
+
+                            status.system = "upload";
+                            actions.setup_upload_system();
+                        });
+                } else {
+                    navigator.getUserMedia =    navigator.getUserMedia
+                                             || navigator.webkitGetUserMedia
+                                             || navigator.mozGetUserMedia
+                                             || navigator.msGetUserMedia;
+
+                    navigator.getUserMedia( settings.webcam.getUserMedia, function( stream ) {
+                        var video = document.querySelector('video');
+                        video.src = window.URL.createObjectURL( stream );
+                        video.onloadedmetadata = function(e) {
+                            localMediaStream = stream;
+                        };
+
+                        status.system = "webcam";
+                        report.browser.userMedia.accept();
+
+                    }, function(){
+                        status.system = "upload";
+                        actions.setup_upload_system();
+                        report.browser.userMedia.reject();
+                    });
+                }
             } else {
+                status.system = "upload";
                 actions.setup_upload_system();
-
-                report.getUserMedia.not_supported();
+                report.browser.userMedia.not_supported();
             }
         }
 

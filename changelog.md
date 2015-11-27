@@ -1,5 +1,9 @@
 # GIFBooth - Changelog and Updates
 
+### 0.1.3 - Implementing getUserMedia
+
+##### - Implement navigator.MediaDevices Implementation with getUserMedia as a backup
+
 ### 0.1.2 - Google Analytics Error Reporting and Upload Reporting
 
 ##### Set up Error Logging through Google analytics

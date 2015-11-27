@@ -9,16 +9,20 @@ GIFBooth is an experiment using various Javascript API's to allow users to use l
 
 ## TODOS
 
-- ### Add a flash backup
-    - Possible Implementation from: https://github.com/jhuckaby/webcamjs
-    - Possible Implementation from: https://github.com/amw/jpeg_camera
+- ### Make Ghost Icon bigger on preview so it is easier to user
 
-- ### Update to implement FF navigator.MediaDevices Implementation
+- ### Update size of remove x inside of frame view
+
+- ### Add upload indicator so users know that an action is happening on upload.
 
 - ### Add options for sharing
+
+- ### Add toggle help screen for small
 
 - ### Fix small portrait to have better dimensions as well as setting controls to fit better
 
 - ### Fix small landscape to have setting controls fit on the screen.
 
-- ### Add upload indicator so users know that an action is happening on upload.
+- ### Add a flash backup ( Safari and IE )
+    - Possible Implementation from: https://github.com/jhuckaby/webcamjs
+    - Possible Implementation from: https://github.com/amw/jpeg_camera
