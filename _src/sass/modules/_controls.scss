@@ -31,8 +31,11 @@
 
 .control {
     display: inline-block;
-    margin-right: rem(2em);
+    margin-right: rem(1.5em);
     vertical-align: middle;
+    overflow: hidden;
+    height: rem(42px);
+    width: rem(43px);
 
     &.disabled {
         opacity: .2;
@@ -48,6 +51,10 @@
             content: "";
             z-index: 2;
         }
+    }
+
+    &:last-child {
+        margin-right: 0;
     }
 
     &.wide {
@@ -72,6 +79,11 @@
 
     @include mq(small) {
         margin-right: .5em;
+    }
+
+    @include mq(medium) {
+        height: rem(68px);
+        width: rem(67px);
     }
 }
 

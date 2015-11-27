@@ -92,6 +92,10 @@
         .invert-preview {
             display: none;
         }
+
+        .overlay-controls {
+            font-size: 20px;
+        }
     }
 
     > .live {
@@ -175,11 +179,15 @@
 // --------------------------------
 
 .view {
+    position: absolute;
     margin: 0 auto;
     padding: 2vw;
     background-color: setcolor(black);
     width: 100%;
-    max-width: 139vh;
+    max-width: 110vh;
+    left: 50%;
+    top: calc(50% - 20px);
+    transform: translate(-50%, -50%);
 
     &::after {
         content: "";

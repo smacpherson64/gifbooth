@@ -1,4 +1,4 @@
-# GIFBooth - Handcrafted Moving Pictures
+# GIFBooth - Handcrafted Moving Pictures (version 0.1.4)
 
 ## Description
 GIFBooth is an experiment using various Javascript API's to allow users to use live video to create animated GIFs. Selfies will never be the same.
@@ -9,7 +9,9 @@ GIFBooth is an experiment using various Javascript API's to allow users to use l
 
 ## TODOS
 
-- ### Make Ghost Icon bigger on preview so it is easier to user
+
+
+
 
 - ### Update size of remove x inside of frame view
 
@@ -17,11 +19,7 @@ GIFBooth is an experiment using various Javascript API's to allow users to use l
 
 - ### Add options for sharing
 
-- ### Add toggle help screen for small
-
-- ### Fix small portrait to have better dimensions as well as setting controls to fit better
-
-- ### Fix small landscape to have setting controls fit on the screen.
+- ### Add toggle help
 
 - ### Add a flash backup ( Safari and IE )
     - Possible Implementation from: https://github.com/jhuckaby/webcamjs
