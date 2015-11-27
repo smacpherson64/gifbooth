@@ -97,7 +97,7 @@ waitFor('body', function() {
 
                 status.upload.trigger = setInterval( function(){
                     if ( status.upload.current == status.upload.total ) {
-                        $root.trigger('gif-upload-complete');
+                        trigger.upload_complete( status.upload[now] );
                         clearInterval(status.upload.trigger)
                     } else {
                         console.log('Loading: ' + status.upload.current + ' of ' + status.upload.total);
@@ -311,7 +311,8 @@ waitFor('body', function() {
             'update_overlay'    : function() { $root.trigger('gif-update-overlay', [ this ]) },
             'download'          : function() { $root.trigger('gif-download') },
             'sort'              : function() { $root.trigger('gif-frames-sort') },
-            'upload_files'      : function( event ) { $root.trigger('gif-upload-files'), [ event ]}
+            'upload_files'      : function( event ) { $root.trigger('gif-upload-files'), [ event ]},
+            'upload_complete'   : function( status ) { $root.trigger('gif-upload-complete', [ status ])},
         };
 
 
@@ -405,7 +406,7 @@ waitFor('body', function() {
             actions.upload_files();
         });
 
-        $root.on( 'gif-upload-complete', function() {
+        $root.on( 'gif-upload-complete', function( event, status ) {
             console.log('complete');
 
             if ( !settings.controlsActive )
@@ -413,6 +414,8 @@ waitFor('body', function() {
 
             actions.update_overlay_src();
             actions.render();
+
+            report.app.upload( status );
         });
 
         $(document).on( 'page-visibility-change', function( event, status ) {
@@ -446,7 +449,7 @@ waitFor('body', function() {
             'browser': {
                 'userMedia'     : {
                     'accept'        : function() { ga('send', 'event', 'getUserMedia', 'accept') },
-                    'reject'        : function(err) { ga('send', 'event', 'getUserMedia', 'reject', 'getUserMedia', err) },
+                    'reject'        : function(err) { ga('send', 'event', 'getUserMedia', 'reject', err ) },
                     'not_supported' : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
                 },
             },
@@ -460,7 +463,8 @@ waitFor('body', function() {
                 'download'      : function( details ) { ga('send', 'event', 'action', 'Download GIF', details ) },
                 'speed'         : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value ) },
                 'sort'          : function() { ga('send', 'event', 'action', 'Sort Frames' )},
-                'overlay'       : function( value ) { ga('send', 'event', 'action', 'Toggle Overlay', value) }
+                'overlay'       : function( value ) { ga('send', 'event', 'action', 'Toggle Overlay', value ) },
+                'upload'        : function( value ) { ga('send', 'event', 'action', 'Upload Images', value )}
             }
         }
 
