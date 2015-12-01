@@ -9,12 +9,16 @@ GIFBooth is an experiment using various Javascript API's to allow users to use l
 
 ## TODOS
 
+- ### Refactor JS to be objects
+
+- ### Update Analytic Events to be easier to read
+
 - ### Add upload indicator so users know that an action is happening on upload.
 
 - ### Add options for sharing
 
-- ### Add toggle help
-
 - ### Add a flash backup ( Safari and IE )
     - Possible Implementation from: https://github.com/jhuckaby/webcamjs
     - Possible Implementation from: https://github.com/amw/jpeg_camera
+
+- ### Move article to its own area and simplify styling
