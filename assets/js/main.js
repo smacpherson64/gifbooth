@@ -330,11 +330,12 @@ waitFor('body', function() {
                             var details = {
                                 'time'      : new Date(),
                                 'size'      : blob.size,
-                                'frames'    : actions.get_frame_count()
+                                'frames'    : actions.get_frame_count(),
+                                'speed'     : settings.speed
                             }
 
                             $download.attr( 'href', url);
-                            $download.attr( 'data-details', JSON.stringify( details) );
+                            $download.attr( 'data-details', JSON.stringify( details ) );
                             $preview.attr('src', url);
                             $percent.text('100%');
                             $loading.fadeOut('slow');
