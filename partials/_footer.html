@@ -42,7 +42,7 @@
         };
 
         // WARNING REPORTING
-        if (typeof window.console == "object" && typeof window.console.warn != "function") {
+        if (typeof window.console == "object" && typeof window.console.warn == "function") {
             window.console._warn = window.console.warn;
             window.console.warn = function() {
                 console.log(arguments);
