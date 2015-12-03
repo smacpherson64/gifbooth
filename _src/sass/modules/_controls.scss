@@ -160,6 +160,15 @@
         }
     }
 
+    &.green {
+        background-color: setcolor(green, base);
+        box-shadow: .1em .1em 0 setcolor(green, dark);
+
+        &.active {
+            background-color: setcolor(green, dark);
+        }
+    }
+
     &.gray {
         background-color: setcolor(gray, base);
         box-shadow: .1em .1em 0 setcolor(gray, dark);

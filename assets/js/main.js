@@ -31,6 +31,19 @@ module.exports = function() {
 }
 
 },{}],3:[function(require,module,exports){
+module.exports = function() {
+    // http://www.developerdrive.com/2013/08/turning-the-querystring-into-a-json-object-using-javascript/
+    var pairs = location.search.slice(1).split('&');
+    var result = {};
+    pairs.forEach(function(pair) {
+        pair = pair.split('=');
+        result[pair[0]] = decodeURIComponent(pair[1] || '');
+    });
+
+    return JSON.parse(JSON.stringify(result));
+};
+
+},{}],4:[function(require,module,exports){
 /**
  * waitFor
  * @param  {String}   selector DOM element to check for on every page load
@@ -44,7 +57,7 @@ module.exports = function(selector, callback) {
     return false;
   }
 };
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var waitFor = require('waitFor'),
     userMedia = require('../lib/get-user-media'),
     watchPageVisiblity = require('../lib/page-visiblity');
@@ -599,4 +612,45 @@ waitFor('body', function() {
 
 });
 
-},{"../lib/get-user-media":1,"../lib/page-visiblity":2,"waitFor":3}]},{},[4]);
+},{"../lib/get-user-media":1,"../lib/page-visiblity":2,"waitFor":4}],6:[function(require,module,exports){
+var get_query_as_array = require('../lib/query-array');
+
+(function($) {
+
+
+    // =========================
+    // EXPERIMENTS
+    // =========================
+
+    var experiments = {
+        'control': {
+            'download' : function() {
+                $('.js-download-image').addClass('green');
+            },
+        }
+    };
+
+
+
+
+    // =========================
+    // INITIALIZE
+    // =========================
+
+    var query = get_query_as_array(),
+        keys = Object.keys(query);
+
+    keys.forEach(function(key) {
+        var value = query[key];
+        var items = value.split('|').filter(function (n) { return (typeof n != "undefined" && n != "") });
+
+        items.forEach(function(item) {
+            if (typeof experiments[key] != "undefined" && typeof experiments[key][item] == "function")
+                experiments[key][item]();
+        });
+    });
+
+
+})(jQuery);
+
+},{"../lib/query-array":3}]},{},[6,5]);
