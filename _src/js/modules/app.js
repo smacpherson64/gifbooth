@@ -488,7 +488,7 @@ waitFor('body', function() {
         function initalizeVideo() {
             if ( userMedia() ) {
 
-                if ( typeof navigator.mediaDevices != "undefined" ) {
+                if ( typeof navigator.mediaDevices != "undefined" && typeof navigator.mediaDevices.getUserMedia != "undefined") {
                     navigator.mediaDevices.getUserMedia( settings.webcam.mediaDevices )
                         .then(function(stream) {
                             var video = document.querySelector('video');
