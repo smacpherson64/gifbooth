@@ -1,59 +1,59 @@
 .frame-wrapper {
-    position: fixed;
-    top: 0;
-    right: calc(-20vw);
-    width: 20vw;
-    height: 100%;
-    overflow-y: scroll;
-    background-color: setcolor(gray, dark);
+  position: fixed;
+  top: 0;
+  right: calc(-20vw);
+  width: 20vw;
+  height: 100%;
+  overflow-y: scroll;
+  background-color: setcolor(gray, dark);
 
-    border-left: 1px solid setcolor(black);
-    z-index: 40;
-    transition: right 300ms ease-in;
+  border-left: 1px solid setcolor(black);
+  z-index: 40;
+  transition: right 300ms ease-in;
 
-    &.active {
-        right: 0;
-    }
+  &.active {
+    right: 0;
+  }
 }
 
 .frame-container {
-    @extend %cf;
-    padding: .2em 0;
-    cursor: move;
+  @extend %cf;
+  padding: .2em 0;
+  cursor: move;
 
-    & + & {
-        margin-top: 1vw;
-    }
+  & + & {
+    margin-top: 1vw;
+  }
 }
 
 .frames {
-    list-style: none;
-    padding: 1vw;
+  list-style: none;
+  padding: 1vw;
 
-    img {
-        display: block;
-        width: calc(100% - .5em);
-    }
+  img {
+    display: block;
+    width: calc(100% - .5em);
+  }
 }
 
 .remove {
-    cursor: pointer;
-    color: setcolor(white);
-    position: absolute;
-    top: -.3em;
-    right: .1em;
-    z-index: 2;
-    background-color: setcolor(red, base);
-    border-radius: 50%;
-    height: 1.2em;
-    width: 1.2em;
+  cursor: pointer;
+  color: setcolor(white);
+  position: absolute;
+  top: -.3em;
+  right: .1em;
+  z-index: 2;
+  background-color: setcolor(red, base);
+  border-radius: 50%;
+  height: 1.2em;
+  width: 1.2em;
 
-    i {
-        font-size: .8em;
-        line-height: .5;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-    }
+  i {
+    font-size: .8em;
+    line-height: .5;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 }

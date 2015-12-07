@@ -3,20 +3,20 @@
 // ================================
 
 body {
-    padding-top: rem(40px);
-    padding-bottom: rem(180px);
-    min-height: 89vh;
+  padding-top: rem(40px);
+  padding-bottom: rem(180px);
+  min-height: 89vh;
 
-    @include mq(small) {
-        min-height: 100vh;
-        padding-bottom: rem(111px);
-    }
+  @include mq(small) {
+    min-height: 100vh;
+    padding-bottom: rem(111px);
+  }
 }
 
 main.app {
-    position: static;
+  position: static;
 }
 
 canvas {
-    display: none;
+  display: none;
 }

@@ -1,5 +1,10 @@
 # GIFBooth - Changelog and Updates
 
+### 0.1.5 - Cleaning up repository
+
+##### Minor update to JS
+##### Minor updates to structure and moving article page to readme.md
+
 ### 0.1.4 - Misc styling updates as well as bug fixes
 
 ##### Made Ghost Icon bigger on preview so it is easier to use

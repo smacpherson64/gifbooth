@@ -7,31 +7,28 @@
 // --------------------------------
 
 $colors: (
-	black: #171817,
-	white: #ffffff,
-	gray: (
-        base: #2B2E2B,
-        light: #222,
-        dark: #111,
-    ),
-
-	blue: (
-		base: #3C6B9E,
-		light: #2E4059,
-		dark: #30527F
-	),
-
-    red: (
-        base: #E42A42,
-        light: #E25A6A,
-        dark: #AA2029
-    ),
-
-    green: (
-        base: #29BF43,
-        light: #49CC60,
-        dark: #018618
-    )
+  black: #171817,
+  white: #ffffff,
+  gray: (
+    base: #2B2E2B,
+    light: #222,
+    dark: #111,
+  ),
+  blue: (
+    base: #3C6B9E,
+    light: #2E4059,
+    dark: #30527F
+  ),
+  red: (
+    base: #E42A42,
+    light: #E25A6A,
+    dark: #AA2029
+  ),
+  green: (
+    base: #29BF43,
+    light: #49CC60,
+    dark: #018618
+  )
 );
 
 
@@ -42,21 +39,21 @@ $colors: (
 /*
  * Returns a color with an optional tone from the map
  *
- * @param {string}  $color_name     The base name of the color
- * @param {tone}    ($tone|'base')  The tone of that color or 'base'
+ * @param {string}  $color_name   The base name of the color
+ * @param {tone}  ($tone|'base')  The tone of that color or 'base'
  *
  * @return {string} The matching color's value from the map
  */
 
 @function setcolor($color_name, $tone: base) {
-	@if map-has-key($colors, $color_name) {
-		$map_color_name: map-get($colors, $color_name);
-		@if (length($map_color_name) > 1) { /* This must be a map */
-			@return map-get($map_color_name, $tone);
-		} @else { /* It's just a single color */
-			@return $map_color_name;
-		}
-	} @else {
-		@warn "Couldn't find a color named `#{$color_name}`.";
-	}
+  @if map-has-key($colors, $color_name) {
+    $map_color_name: map-get($colors, $color_name);
+    @if (length($map_color_name) > 1) { /* This must be a map */
+      @return map-get($map_color_name, $tone);
+    } @else { /* It's just a single color */
+      @return $map_color_name;
+    }
+  } @else {
+    @warn "Couldn't find a color named `#{$color_name}`.";
+  }
 }
