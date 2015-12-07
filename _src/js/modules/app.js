@@ -7,7 +7,7 @@ waitFor('body', function() {
     (function($){
 
         // =========================
-        // TARGETS
+        // TARGETS and VARIABLES
         // =========================
 
         var $root = $('main.app'),
@@ -27,7 +27,7 @@ waitFor('body', function() {
 
 
         // =========================
-        // SETTINGS
+        // SETTINGS and STATUS
         // =========================
 
         var settings = {

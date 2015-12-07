@@ -9,8 +9,9 @@
     <![endif]-->
 
     <title>GIFBooth - SethMac.com</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="GIFBooth is an experiment using various Javascript API's to allow users to use live video to create animated GIFs.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
 
     <link rel="apple-touch-icon" sizes="57x57" href="//sethmac.com/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="114x114" href="//sethmac.com/apple-touch-icon-114x114.png">
@@ -132,14 +133,7 @@
 
             // If Localhost Debug Analytics
             var ga = function() {
-                var args = [];
-                for ( i=0, t=arguments.length; i<t; i++ ) {
-                    if ( typeof arguments[i] == "object")
-                        arguments[i] = JSON.stringify(arguments[i]);
-
-                    args.push(arguments[i]);
-                }
-                console.log(args);
+                console.log(arguments);
             };
         }
 
@@ -148,9 +142,9 @@
             window.onerror = function(msg, url, line) {
 
                 var error = [
-                    url.length < 50 ? url : url.substr(0, 49),
-                    line,
-                    msg.length < 440 ? msg : msg.substr(0, 439),
+                    "url: " + url.length < 50 ? url : url.substr(0, 46) + " ...",
+                    "line: " + line,
+                    msg.length < 440 ? msg : msg.substr(0, 439) + " ...",
                 ];
 
                 ga('send', 'event', 'error', error.join(" - "));
@@ -159,6 +153,9 @@
         };
 
     </script>
+
+
+
 
     <!-- Google Analytics Content Experiment code - Green Button Experiment -->
     <script>function utmx_section(){}function utmx(){}(function(){var
@@ -174,6 +171,7 @@
     '" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
     </script><script>utmx('url','A/B');</script>
     <!-- End of Google Analytics Content Experiment code -->
+
 
 
 
