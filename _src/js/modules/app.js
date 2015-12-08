@@ -236,7 +236,7 @@ waitFor('body', function() {
         $('.live-wrapper', $root).hide();
       },
 
-      'render' : function(){
+      'render' : function() {
         clearTimeout( window.gifbooth_render );
         window.gifbooth_render = setTimeout(function(){
           window.gifbooth_render = null;
@@ -295,7 +295,7 @@ waitFor('body', function() {
           } else {
             setTimeout(function(){ settings.isRendering = false; }, 250);
           }
-        }, 250);
+        }, 400);
       }
     }
 
@@ -305,18 +305,18 @@ waitFor('body', function() {
     // =========================
 
     var trigger = {
-      'capture'       : function() { $root.trigger('gif-frames-capture') },
-      'delete_all'    : function() { $root.trigger('gif-frames-delete-all') },
-      'render'      : function() { $root.trigger('gif-frames-render') },
-      'remove_one'    : function() { $root.trigger('gif-frames-remove-one', [ this ]) },
-      'invert'      : function() { $root.trigger('gif-view-invert') },
-      'toggle'      : function() { $root.trigger('gif-view-frames') },
+      'capture'         : function() { $root.trigger('gif-frames-capture') },
+      'delete_all'      : function() { $root.trigger('gif-frames-delete-all') },
+      'render'          : function() { $root.trigger('gif-frames-render') },
+      'remove_one'      : function() { $root.trigger('gif-frames-remove-one', [ this ]) },
+      'invert'          : function() { $root.trigger('gif-view-invert') },
+      'toggle'          : function() { $root.trigger('gif-view-frames') },
       'update_speed'    : function() { $root.trigger('gif-update-speed', [ this ]) },
       'update_overlay'  : function() { $root.trigger('gif-update-overlay', [ this ]) },
-      'download'      : function() { $root.trigger('gif-download') },
-      'sort'        : function() { $root.trigger('gif-frames-sort') },
+      'download'        : function() { $root.trigger('gif-download') },
+      'sort'            : function() { $root.trigger('gif-frames-sort') },
       'upload_files'    : function( event ) { $root.trigger('gif-upload-files'), [ event ]},
-      'upload_complete'   : function( status ) { $root.trigger('gif-upload-complete', [ status ])},
+      'upload_complete' : function( status ) { $root.trigger('gif-upload-complete', [ status ])},
     };
 
 
@@ -456,16 +456,16 @@ waitFor('body', function() {
       },
       'app' : {
         'capture'     : function() { ga('send', 'event', 'action', 'Capture Frame') },
-        'delete'    : function() { ga('send', 'event', 'action', 'Delete GIF') },
-        'remove'    : function() { ga('send', 'event', 'action', 'Remove Frame') },
-        'render'    : function() { ga('send', 'event', 'action', 'Render GIF') },
-        'frames'    : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status ) },
+        'delete'      : function() { ga('send', 'event', 'action', 'Delete GIF') },
+        'remove'      : function() { ga('send', 'event', 'action', 'Remove Frame') },
+        'render'      : function() { ga('send', 'event', 'action', 'Render GIF') },
+        'frames'      : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status ) },
         'preview'     : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status ) },
         'download'    : function( details ) { ga('send', 'event', 'action', 'Download GIF', details ) },
-        'speed'     : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value ) },
-        'sort'      : function() { ga('send', 'event', 'action', 'Sort Frames' )},
+        'speed'       : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value ) },
+        'sort'        : function() { ga('send', 'event', 'action', 'Sort Frames' )},
         'overlay'     : function( value ) { ga('send', 'event', 'action', 'Toggle Overlay', value ) },
-        'upload'    : function( value ) { ga('send', 'event', 'action', 'Upload Images', value )}
+        'upload'      : function( value ) { ga('send', 'event', 'action', 'Upload Images', value )}
       }
     }
 
@@ -501,9 +501,9 @@ waitFor('body', function() {
             });
         } else {
           navigator.getUserMedia =  navigator.getUserMedia
-                       || navigator.webkitGetUserMedia
-                       || navigator.mozGetUserMedia
-                       || navigator.msGetUserMedia;
+                                 || navigator.webkitGetUserMedia
+                                 || navigator.mozGetUserMedia
+                                 || navigator.msGetUserMedia;
 
           navigator.getUserMedia( settings.webcam.getUserMedia, function( stream ) {
             var video = document.querySelector('video');

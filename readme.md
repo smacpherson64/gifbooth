@@ -1,26 +1,31 @@
-# <a href="http://sethmac.com/gifbooth/">GIFBooth (version 0.1.4)</a>
+# <a href="http://sethmac.com/gifbooth/">GIFBooth (version 0.1.5)</a>
 
 ## Description
 GIFBooth is an experiment using various Javascript API's to allow users to use live video to create animated GIFs.
 
 
-## TODOS
+## TODOS and Fixes
 
-- #### Move Todos into Issues
+##### ANALYTICS
+- Detect right click on rendered GIF, send to GA as event
+- Refactor Analytic Events to be easier to read
 
-- #### Refactor JS to be objects
+##### APP FUNCTIONALITY
+- Remove Render button (Make sure proper render always happens)
+- Add Timer Based Capture
+- Add options for sharing
+- Add upload indicator so users know that an action is happening on upload.
+- Frames close button on the actual frames section (Will Phillips)
+- Rotate frames (single and all frames in frames view)
 
-- #### Update Analytic Events to be easier to read
+##### ADMINISTRATION
+- Move Todos into Issues in github
 
-- #### Add upload indicator so users know that an action is happening on upload.
-
-- #### Add options for sharing
-
-- #### Add a flash backup ( Safari and IE )
+##### JS REFACTOR
+- Refactor JS to be object based (Webcam especially)
+- Add a flash backup ( Safari and IE )
     - Possible Implementation from: https://github.com/jhuckaby/webcamjs
     - Possible Implementation from: https://github.com/amw/jpeg_camera
-
-- #### Move article to its own area and simplify styling
 
 ## Tools
 - **<a href="https://github.com/40Digits/gulp-eta">Gulp ETA</a>** - An open source frontend build script developed by <a href="http://40digits.com/">40Digits</a>
@@ -32,7 +37,7 @@ GIFBooth is an experiment using various Javascript API's to allow users to use l
 ## Development Notes
 
 #### getUserMedia
-- **getUserMedia is now HTTPS only on chrome** - getUserMedia() no longer works on insecure origins. To use this feature, you should consider switching your application to a secure origin, such as HTTPS. See https://goo.gl/rStTGz for more details.
+- **getUserMedia is now HTTPS only** - getUserMedia() no longer works on insecure origins. To use this feature, you should consider switching your application to a secure origin, such as HTTPS. See <a href="https://goo.gl/rStTGz">https://goo.gl/rStTGz</a> for more details.
 
 #### Error Reporting through Google Analytics
 - **<a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/exceptions">Google Analytics Exceptions</a>**. - <a href="http://stackoverflow.com/questions/21718481/report-for-exceptions-from-google-analytics-analytics-js-exception-tracking">Google Analytics Report on Stack Overflow</a>. If you want to view Exceptions and Crashes in Google Analytics the view must be an app view: <a href="https://support.google.com/analytics/answer/2649553#WebVersusAppViews">App View vs Web View</a>. With App view Google Analytics only displays Devices in views.
