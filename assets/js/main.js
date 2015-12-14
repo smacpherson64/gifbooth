@@ -89,9 +89,8 @@ waitFor('body', function() {
     // =========================
 
     var settings = {
-      'speed'       : 100,
+      'speed'       : 250,
       'isRendering'     : false,
-      'controlsActive'  : false,
       'default_image'   : "data:image/gif;base64,R0lGODlhEAAJAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAAQAAkAAAIKlI+py+0Po5yUFQA7",
       'webcam'   : {
         'mediaDevices' : {
@@ -120,54 +119,136 @@ waitFor('body', function() {
 
     var status = {
       'system': '',
-      'upload': {}
+      'upload': {},
+      'controls' : false,
     }
 
 
     // =========================
-    // TRIGGERED ACTIONS
+    // TRIGGERED APP ACTIONS
     // =========================
 
-    var actions = {
+    var app = {
 
-      'upload_files' : function() {
+      upload_system: {
 
-        var now = new Date();
-        var time = now.getTime();
-        var upload = $upload[0];
-        var files = upload.files;
+        initalize: function() {
+          $upload.addClass('active');
+          $('.js-frames-capture', $root).find('i').attr('data-label', 'upload');
+          $('.live-wrapper', $root).hide();
+        },
 
-        status.upload[now] = {};
-        status.upload[now].total = files.length;
-        status.upload[now].current = 0;
+        'upload' : function() {
+          var now = new Date();
+          var time = now.getTime();
+          var upload = $upload[0];
+          var files = upload.files;
 
-        for (var i = 0, file; file = files[i]; i++) {
+          status.upload[now] = {};
+          status.upload[now].total = files.length;
+          status.upload[now].current = 0;
 
-          if ( !file.type.match('image.*')) {
-            status.upload[now].current++;
-            continue;
-          }
+          for (var i = 0, file; file = files[i]; i++) {
 
-          var reader = new FileReader();
-
-          reader.onload = (function( fileURL ) {
-            return function(event) {
-              actions.add_frame( event.target.result );
+            if ( !file.type.match('image.*' )) {
               status.upload[now].current++;
-            };
-          })( file );
+              continue;
+            }
 
-          reader.readAsDataURL( file );
-        }
+            var reader = new FileReader();
 
-        status.upload.trigger = setInterval( function(){
-          if ( status.upload.current == status.upload.total ) {
-            trigger.upload_complete( status.upload[now] );
-            clearInterval(status.upload.trigger)
-          } else {
-            console.log('Loading: ' + status.upload.current + ' of ' + status.upload.total);
+            reader.onload = (function( fileURL ) {
+              return function(event) {
+                app.add_frame( event.target.result );
+                status.upload[now].current++;
+              };
+            })( file );
+
+            reader.readAsDataURL( file );
           }
-        }, 100 );
+
+          status.upload.trigger = setInterval( function(){
+            if ( status.upload.current == status.upload.total ) {
+              trigger.upload_complete( status.upload[now] );
+              clearInterval(status.upload.trigger)
+            } else {
+              console.log('Loading: ' + status.upload.current + ' of ' + status.upload.total);
+            }
+          }, 100 );
+        },
+
+      },
+
+      webcam_system: {
+
+        initalize: function() {
+          if ( userMedia() ) {
+            if ( typeof navigator.mediaDevices != "undefined" && typeof navigator.mediaDevices.getUserMedia != "undefined") {
+              navigator.mediaDevices.getUserMedia( settings.webcam.mediaDevices )
+                .then(function(stream) {
+                  var video = document.querySelector('video');
+                  video.src = window.URL.createObjectURL( stream );
+                  video.onloadedmetadata = function(e) {
+                    localMediaStream = stream;
+                  };
+
+                  trigger.system_setup( 'accept' );
+                })
+                .catch(function(error) {
+                  if (error.name === 'ConstraintNotSatisfiedError') {
+                    trigger.system_setup( 'resolution_issue' );
+                  } else if (error.name === 'PermissionDeniedError') {
+                    trigger.system_setup( 'reject' );
+                  }
+                });
+            } else {
+              navigator.getUserMedia =  navigator.getUserMedia
+                                     || navigator.webkitGetUserMedia
+                                     || navigator.mozGetUserMedia
+                                     || navigator.msGetUserMedia;
+
+              navigator.getUserMedia( settings.webcam.getUserMedia, function( stream ) {
+                var video = document.querySelector('video');
+                video.src = window.URL.createObjectURL( stream );
+                video.onloadedmetadata = function(e) { localMediaStream = stream; };
+                trigger.system_setup( 'accept' );
+              }, function() { trigger.system_setup( 'reject' ); });
+            }
+          } else {
+            trigger.system_setup( 'not_supported' );
+          }
+        },
+
+        'toggle_live': function( isHidden ) {
+
+          if ( isHidden && status.system === "webcam" ) {
+
+            if ( typeof localMediaStream.getAudioTracks != "undefined" ){
+              localMediaStream.getAudioTracks().forEach(function( value ){ value.stop(); });
+            }
+
+            if ( typeof localMediaStream.getVideoTracks != "undefined" ) {
+              localMediaStream.getVideoTracks().forEach(function( value ){ value.stop(); });
+            }
+
+            if ( typeof localMediaStream.stop != "undefined" ) {
+              localMediaStream.stop();
+            }
+
+          } else {
+            app.webcam_system.initalize();
+          }
+        },
+      },
+
+      'get_image_dimensions': function() {
+        var img = $frames.find('img')[0],
+            data = {
+              'width'   : img.naturalWidth,
+              'height'  : img.naturalHeight
+            };
+
+        return data;
       },
 
       'add_frame' : function( image ) {
@@ -190,7 +271,7 @@ waitFor('body', function() {
       },
 
       'close_frames_view' : function() {
-        $('.frame-wrapper, .js-view-toggle-frames').removeClass('active');
+        $('.section-frames, .js-view-toggle-frames').removeClass('active');
       },
 
       'clear_preview': function() {
@@ -198,10 +279,10 @@ waitFor('body', function() {
       },
 
       'toggle_frames_view' : function() {
-        var $targets = $('.frame-wrapper, .js-view-toggle-frames');
+        var $targets = $('.section-frames, .js-view-toggle-frames');
         $targets.toggleClass('active');
 
-        return $targets.hasClass('active') ? 'open' : 'close';;
+        return $targets.hasClass('active') ? 'open' : 'close';
       },
 
       'activate_controls' : function () {
@@ -210,7 +291,7 @@ waitFor('body', function() {
           $(this).removeClass('disabled');
         });
 
-        settings.controlsActive = true;
+        status.controlsActive = true;
       },
 
       'deactivate_controls' : function () {
@@ -219,7 +300,7 @@ waitFor('body', function() {
           $(this).addClass('disabled');
         });
 
-        settings.controlsActive = false;
+        status.controlsActive = false;
       },
 
       'remove_one_frame' : function( target ) {
@@ -248,7 +329,7 @@ waitFor('body', function() {
       },
 
       'update_overlay_src': function(){
-        if ( actions.get_frame_count() > 0 ) {
+        if ( app.get_frame_count() > 0 ) {
           $ghost.attr('src', $('.frame-container:last-child img').attr('src'));
         } else {
           $ghost.attr('src', settings.default_image);
@@ -268,35 +349,7 @@ waitFor('body', function() {
         return new_speed;
       },
 
-      'stop_live': function( visiblity ) {
-        var isHidden = visiblity;
-
-        if ( isHidden && status.system === "webcam" ) {
-
-          if ( typeof localMediaStream.getAudioTracks != "undefined" ){
-            localMediaStream.getAudioTracks().forEach(function( value ){ value.stop(); });
-          }
-
-          if ( typeof localMediaStream.getVideoTracks != "undefined" ) {
-            localMediaStream.getVideoTracks().forEach(function( value ){ value.stop(); });
-          }
-
-          if ( typeof localMediaStream.stop != "undefined" ) {
-            localMediaStream.stop();
-          }
-
-        } else {
-          initalizeVideo();
-        }
-      },
-
-      'setup_upload_system': function() {
-        $upload.addClass('active');
-        $('.js-frames-capture', $root).find('i').attr('data-label', 'upload');
-        $('.live-wrapper', $root).hide();
-      },
-
-      'render' : function(){
+      'render' : function() {
         clearTimeout( window.gifbooth_render );
         window.gifbooth_render = setTimeout(function(){
           window.gifbooth_render = null;
@@ -308,10 +361,13 @@ waitFor('body', function() {
 
           var $loading = $('.loading'),
             $percent = $('.percent', $loading),
-            $animation = $frames.find('img');
+            $animation = $frames.find('img'),
+            gif_size = app.get_image_dimensions();
+            
+            settings.gif_options.width = gif_size.width;
+            settings.gif_options.height = gif_size.height;
 
           if ( $animation.length > 0 ) {
-
             var defaults = {
               delay: settings.speed,
               copy: true
@@ -339,7 +395,7 @@ waitFor('body', function() {
               var details = {
                 'time'    : new Date(),
                 'size'    : blob.size,
-                'frames'  : actions.get_frame_count(),
+                'frames'  : app.get_frame_count(),
                 'speed'   : settings.speed
               }
 
@@ -351,13 +407,47 @@ waitFor('body', function() {
               settings.isRendering = false;
             });
 
-            gif.render();
+            setTimeout(function() { gif.render(); }, 500);
           } else {
-            setTimeout(function(){ settings.isRendering = false; }, 250);
+            setTimeout(function() { settings.isRendering = false; }, 250);
           }
-        }, 250);
+        }, 400);
       }
     }
+
+
+
+
+    // =========================
+    // REPORTS
+    // =========================
+
+    var report = {
+      'browser': {
+        'userMedia'   : {
+          'accept'      : function() { ga('send', 'event', 'getUserMedia', 'accept') },
+          'reject'      : function( err ) { ga('send', 'event', 'getUserMedia', 'reject', err ) },
+          'not_supported'   : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
+          'resolution_issue'  : function() { ga('send', 'event', 'getUserMedia', 'resolution-not-supported') },
+        },
+      },
+      'app' : {
+        'capture'     : function() { ga('send', 'event', 'action', 'Capture Frame') },
+        'delete'      : function() { ga('send', 'event', 'action', 'Delete GIF') },
+        'remove'      : function() { ga('send', 'event', 'action', 'Remove Frame') },
+        'render'      : function() { ga('send', 'event', 'action', 'Render GIF') },
+        'frames'      : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status ) },
+        'preview'     : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status ) },
+        'download'    : function( details ) { ga('send', 'event', 'action', 'Download GIF', details ) },
+        'speed'       : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value ) },
+        'sort'        : function() { ga('send', 'event', 'action', 'Sort Frames' )},
+        'overlay'     : function( value ) { ga('send', 'event', 'action', 'Toggle Overlay', value ) },
+        'upload'      : function( value ) { ga('send', 'event', 'action', 'Upload Images', value )},
+        'contextmenu' : function( details ) { ga('send', 'event', 'action', 'Context Menu Open on GIF', details )}
+      }
+    }
+
+
 
 
     // =========================
@@ -365,124 +455,172 @@ waitFor('body', function() {
     // =========================
 
     var trigger = {
-      'capture'       : function() { $root.trigger('gif-frames-capture') },
-      'delete_all'    : function() { $root.trigger('gif-frames-delete-all') },
-      'render'      : function() { $root.trigger('gif-frames-render') },
-      'remove_one'    : function() { $root.trigger('gif-frames-remove-one', [ this ]) },
-      'invert'      : function() { $root.trigger('gif-view-invert') },
-      'toggle'      : function() { $root.trigger('gif-view-frames') },
+      'capture'         : function() { $root.trigger('gif-frames-capture') },
+      'contextmenu'     : function() { $root.trigger('gif-contextmenu') },
+      'close_frames'    : function() { $root.trigger('gif-close-frames')},
+      'delete_all'      : function() { $root.trigger('gif-frames-delete-all') },
+      'render'          : function() { $root.trigger('gif-frames-render') },
+      'remove_one'      : function() { $root.trigger('gif-frames-remove-one', [ this ]) },
+      'invert'          : function() { $root.trigger('gif-view-invert') },
+      'toggle'          : function() { $root.trigger('gif-view-frames') },
       'update_speed'    : function() { $root.trigger('gif-update-speed', [ this ]) },
       'update_overlay'  : function() { $root.trigger('gif-update-overlay', [ this ]) },
-      'download'      : function() { $root.trigger('gif-download') },
-      'sort'        : function() { $root.trigger('gif-frames-sort') },
+      'download'        : function() { $root.trigger('gif-download') },
+      'sort'            : function() { $root.trigger('gif-frames-sort') },
       'upload_files'    : function( event ) { $root.trigger('gif-upload-files'), [ event ]},
-      'upload_complete'   : function( status ) { $root.trigger('gif-upload-complete', [ status ])},
+      'upload_complete' : function( status ) { $root.trigger('gif-upload-complete', [ status ])},
+      'system_setup'    : function( webcam_system_response ) { $root.trigger('gif-system-setup', [ webcam_system_response ])}
     };
+
+
 
 
     // =========================
     // APP EVENT LISTENERS
     // =========================
 
+    $root.on( 'gif-system-setup', function( event, webcam_system_response ) {
+      console.log( webcam_system_response );
+      switch ( webcam_system_response ) {
+        case 'accept':
+          status.system = "webcam";
+          report.browser.userMedia.accept();
+          break;
+
+        case 'resolution_issue':
+          status.system = "upload";
+          app.upload_system.initalize();
+          report.browser.userMedia.resolution_issue();
+          break;
+
+        case 'not_supported':
+          status.system = "upload";
+          app.upload_system.initalize();
+          report.browser.userMedia.not_supported();
+          break;
+
+        case 'reject':
+        default:
+          status.system = "upload";
+          app.upload_system.initalize();
+          report.browser.userMedia.reject();
+          break;
+      }
+    });
+
     $root.on( 'gif-frames-capture', function() {
-      actions.capture_frame();
+      app.capture_frame();
 
-      if ( !settings.controlsActive )
-        actions.activate_controls();
+      if ( !status.controlsActive )
+        app.activate_controls();
 
-      actions.update_overlay_src();
-      actions.render();
+      app.update_overlay_src();
+      app.render();
 
       report.app.capture();
     });
 
     $root.on( 'gif-frames-delete-all', function( ) {
-      actions.delete_all_frames();
-      actions.close_frames_view();
-      actions.deactivate_controls();
-      actions.update_overlay_src();
+      app.delete_all_frames();
+      app.close_frames_view();
+      app.deactivate_controls();
+      app.update_overlay_src();
 
       report.app.delete();
     });
 
     $root.on( 'gif-frames-remove-one', function( event, target ) {
-      actions.remove_one_frame( target );
+      app.remove_one_frame( target );
 
-      if (actions.get_frame_count() > 0 ) {
-        actions.render();
+      if (app.get_frame_count() > 0 ) {
+        app.render();
       } else {
-        actions.close_frames_view();
-        actions.deactivate_controls();
-        actions.clear_preview();
+        app.close_frames_view();
+        app.deactivate_controls();
+        app.clear_preview();
       }
 
-      actions.update_overlay_src();
+      app.update_overlay_src();
 
       report.app.remove();
     });
 
     $root.on( 'gif-view-invert', function() {
-      var status = actions.invert_preview();
+      var status = app.invert_preview();
 
       report.app.preview( status );
     });
 
     $root.on( 'gif-view-frames', function() {
-      var status = actions.toggle_frames_view();
+      var status = app.toggle_frames_view();
 
       report.app.frames( status );
     });
 
+    $root.on( 'gif-close-frames', function() {
+      app.close_frames_view();
+
+      report.app.frames('close')
+    });
+
     $root.on( 'gif-update-speed', function( event, target ) {
-      var value = actions.update_gif_speed( target );
-      actions.render();
+      var value = app.update_gif_speed( target );
+      app.render();
 
       report.app.speed( value );
     });
 
     $root.on( 'gif-update-overlay', function( event, target ) {
-      var value = actions.update_overlay_opacity( target );
+      var value = app.update_overlay_opacity( target );
 
       report.app.overlay( value );
     });
 
     $root.on( 'gif-frames-render', function( event, target ) {
-      actions.render();
+      app.render();
 
       report.app.render();
     });
 
     $root.on( 'gif-frames-sort', function() {
-      actions.render();
+      app.render();
 
       report.app.sort();
     });
 
     $root.on( 'gif-download', function() {
-      var details = actions.get_gif_details();
+      var details = app.get_gif_details();
 
       report.app.download( details );
     });
 
+    $root.on( 'gif-contextmenu', function() {
+      var details = app.get_gif_details();
+
+      if (typeof details != "undefined") {
+        report.app.contextmenu( details );
+      }
+    });
+
     $root.on( 'gif-upload-files', function() {
-      actions.upload_files();
+      app.upload_system.upload();
     });
 
     $root.on( 'gif-upload-complete', function( event, status ) {
-      console.log('complete');
+      if ( !status.controlsActive )
+        app.activate_controls();
 
-      if ( !settings.controlsActive )
-        actions.activate_controls();
-
-      actions.update_overlay_src();
-      actions.render();
+      app.update_overlay_src();
+      app.render();
 
       report.app.upload( status );
     });
 
     $(document).on( 'page-visibility-change', function( event, status ) {
-      actions.stop_live( status );
+      app.webcam_system.toggle_live( status );
     });
+
+
 
 
     // =========================
@@ -498,101 +636,23 @@ waitFor('body', function() {
     $root.on( 'click', '.js-download-image', trigger.download );
     $root.on( 'click', '.js-overlay-toggle', trigger.update_overlay );
     $root.on( 'change', '.js-control-speed', trigger.update_speed );
-    $root.on( 'change', '.js-file-upload', trigger.upload_files )
+    $root.on( 'change', '.js-file-upload', trigger.upload_files );
+    $root.on( 'contextmenu', '.js-preview-gif', trigger.contextmenu );
+    $root.on( 'click', '.js-close-frames', trigger.close_frames );
 
 
-    // =========================
-    // REPORTS
-    // =========================
-
-    var report = {
-      'browser': {
-        'userMedia'   : {
-          'accept'      : function() { ga('send', 'event', 'getUserMedia', 'accept') },
-          'reject'      : function(err) { ga('send', 'event', 'getUserMedia', 'reject', err ) },
-          'not_supported'   : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
-          'resolution_issue'  : function() { ga('send', 'event', 'getUserMedia', 'resolution-not-supported') },
-        },
-      },
-      'app' : {
-        'capture'     : function() { ga('send', 'event', 'action', 'Capture Frame') },
-        'delete'    : function() { ga('send', 'event', 'action', 'Delete GIF') },
-        'remove'    : function() { ga('send', 'event', 'action', 'Remove Frame') },
-        'render'    : function() { ga('send', 'event', 'action', 'Render GIF') },
-        'frames'    : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status ) },
-        'preview'     : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status ) },
-        'download'    : function( details ) { ga('send', 'event', 'action', 'Download GIF', details ) },
-        'speed'     : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value ) },
-        'sort'      : function() { ga('send', 'event', 'action', 'Sort Frames' )},
-        'overlay'     : function( value ) { ga('send', 'event', 'action', 'Toggle Overlay', value ) },
-        'upload'    : function( value ) { ga('send', 'event', 'action', 'Upload Images', value )}
-      }
-    }
 
 
     // =========================
     // INITIALIZE
     // =========================
 
-    function initalizeVideo() {
-      if ( userMedia() ) {
-
-        if ( typeof navigator.mediaDevices != "undefined" && typeof navigator.mediaDevices.getUserMedia != "undefined") {
-          navigator.mediaDevices.getUserMedia( settings.webcam.mediaDevices )
-            .then(function(stream) {
-              var video = document.querySelector('video');
-              video.src = window.URL.createObjectURL( stream );
-              video.onloadedmetadata = function(e) {
-                localMediaStream = stream;
-              };
-
-              status.system = "webcam";
-              report.browser.userMedia.accept();
-            })
-            .catch(function(error) {
-              if (error.name === 'ConstraintNotSatisfiedError') {
-                report.browser.userMedia.resolution_issue();
-              } else if (error.name === 'PermissionDeniedError') {
-                report.browser.userMedia.reject();
-              }
-
-              status.system = "upload";
-              actions.setup_upload_system();
-            });
-        } else {
-          navigator.getUserMedia =  navigator.getUserMedia
-                       || navigator.webkitGetUserMedia
-                       || navigator.mozGetUserMedia
-                       || navigator.msGetUserMedia;
-
-          navigator.getUserMedia( settings.webcam.getUserMedia, function( stream ) {
-            var video = document.querySelector('video');
-            video.src = window.URL.createObjectURL( stream );
-            video.onloadedmetadata = function(e) {
-              localMediaStream = stream;
-            };
-
-            status.system = "webcam";
-            report.browser.userMedia.accept();
-
-          }, function(){
-            status.system = "upload";
-            actions.setup_upload_system();
-            report.browser.userMedia.reject();
-          });
-        }
-      } else {
-        status.system = "upload";
-        actions.setup_upload_system();
-        report.browser.userMedia.not_supported();
-      }
+    function initalizeApp() {
+        app.webcam_system.initalize();
     }
 
     var pageHidden = watchPageVisiblity();
-
-    if ( ! pageHidden ) {
-      initalizeVideo();
-    }
+    if ( !pageHidden ) { initalizeApp(); }
 
   })(jQuery);
 

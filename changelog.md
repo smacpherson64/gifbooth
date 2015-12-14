@@ -1,5 +1,10 @@
 # GIFBooth - Changelog and Updates
 
+### 0.1.6 -
+
+##### Set contextmenu on GIF preview to go to Google Analytics
+##### Added more understandable way to close frames frame
+
 ### 0.1.5 - Cleaning up repository
 
 ##### Minor update to JS

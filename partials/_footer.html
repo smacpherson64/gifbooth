@@ -1,57 +1,66 @@
 	<footer></footer>
 
-  <script>
-    if ( window.location.hostname.indexOf('localhost') == -1 ) {
-      // NOT LOCALHOST - USE PRODUCTION ANALYTICS
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-8071527-6', 'auto');
-      ga('send', 'pagefiew');
-    } else {
-      // LOCALHOST - DEBUG ANALYTICS
-      var ga = function() {
-        console.log(arguments);
-      };
-    }
+    <script>
 
-    // ERROR REPORTING
-    if (typeof window.onerror == "object") {
-      window.onerror = function(msg, url, line) {
+        if ( window.location.hostname.indexOf('localhost') == -1 ) {
 
-        var error = [
-          "url: " + url.length < 50 ? url : url.substr(0, 46) + " ...",
-          "line: " + line,
-          msg.length < 440 ? msg : msg.substr(0, 439) + " ...",
-        ];
+            // If NOT Localhost set Google Analytics
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-8071527-6', 'auto');
+            ga('send', 'pagefiew');
 
-        ga('send', 'event', 'error', error.join(" - "));
-        return false;
-      };
-    };
-  </script>
+        } else {
 
+            // If Localhost Debug Analytics
+            var ga = function() {
+                console.log(arguments);
+            };
+        }
 
-  <!-- Google Analytics Content Experiment code - Green Button Experiment -->
-  <script>function utmx_section(){}function utmx(){}(function(){var
-  k='112048122-1',d=document,l=d.location,c=d.cookie;
-  if(l.search.indexOf('utm_expid='+k)>0)return;
-  function f(n){if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.
-  indexOf(';',i);return escape(c.substring(i+n.length+1,j<0?c.
-  length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;d.write(
-  '<sc'+'ript src="'+'http'+(l.protocol=='https:'?'s://ssl':
-  '://www')+'.google-analytics.com/ga_exp.js?'+'utmxkey='+k+
-  '&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='+new Date().
-  valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
-  '" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
-  </script><script>utmx('url','A/B');</script>
-  <!-- End of Google Analytics Content Experiment code -->
+        // ERROR REPORTING
+        if (typeof window.onerror == "object") {
+            window.onerror = function(msg, url, line) {
+
+                var error = [
+                    "url: " + url.length < 50 ? url : url.substr(0, 46) + " ...",
+                    "line: " + line,
+                    msg.length < 440 ? msg : msg.substr(0, 439) + " ...",
+                ];
+
+                ga('send', 'event', 'error', error.join(" - "));
+                return false;
+            };
+        };
+
+    </script>
 
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="jquery.sortable.min.js"></script>
-  <script src="gif.js"></script>
+
+
+    <!-- Google Analytics Content Experiment code - Green Button Experiment -->
+    <script>function utmx_section(){}function utmx(){}(function(){var
+    k='112048122-1',d=document,l=d.location,c=d.cookie;
+    if(l.search.indexOf('utm_expid='+k)>0)return;
+    function f(n){if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.
+    indexOf(';',i);return escape(c.substring(i+n.length+1,j<0?c.
+    length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;d.write(
+    '<sc'+'ript src="'+'http'+(l.protocol=='https:'?'s://ssl':
+    '://www')+'.google-analytics.com/ga_exp.js?'+'utmxkey='+k+
+    '&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='+new Date().
+    valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
+    '" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
+    </script><script>utmx('url','A/B');</script>
+    <!-- End of Google Analytics Content Experiment code -->
+
+
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="jquery.sortable.min.js"></script>
+    <script src="gif.js"></script>
 	<script src="assets/js/main.js"></script>
 
 </body>
