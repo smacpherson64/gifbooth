@@ -1,9 +1,12 @@
 # GIFBooth - Changelog and Updates
 
-### 0.1.6 -
+### 0.1.6 - Minor refactor on JS and Updating UI
 
 ##### Set contextmenu on GIF preview to go to Google Analytics
 ##### Added more understandable way to close frames frame
+##### Removed Reload button ( added timeout before render );
+##### Added a hidden timer button
+##### Minor Refactor for JS to be more object based
 
 ### 0.1.5 - Cleaning up repository
 

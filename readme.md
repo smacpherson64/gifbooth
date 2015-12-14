@@ -10,7 +10,6 @@ GIFBooth is an experiment using various Javascript API's to allow users to use l
 - Refactor Analytic Events to be easier to read
 
 ##### APP FUNCTIONALITY
-- Remove Render button (Make sure proper render always happens)
 - Add Timer Based Capture
 - Add options for sharing
 - Add upload indicator so users know that an action is happening on upload.
