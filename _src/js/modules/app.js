@@ -303,9 +303,17 @@ waitFor('body', function() {
             $percent = $('.percent', $loading),
             $animation = $frames.find('img'),
             gif_size = app.get_image_dimensions();
-            
-            settings.gif_options.width = gif_size.width;
-            settings.gif_options.height = gif_size.height;
+            gif_ratio = gif_size.width / gif_size.height;
+
+            settings.gif_options.width = gif_size.width > 1270 ? 1270 : gif_size.width;
+            settings.gif_options.height = gif_size.height > 1270 ? 1270 : gif_size.height;
+
+            if ( gif_ratio > 1 ) {
+                settings.gif_options.height = Math.round( gif_size.height * 1270 / gif_size.width );
+            } else if ( gif_ratio < 1 ) {
+                settings.gif_options.width = Math.round( gif_size.width * 1270 / gif_size.height );
+            }
+
 
           if ( $animation.length > 0 ) {
             var defaults = {
