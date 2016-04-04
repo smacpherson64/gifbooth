@@ -70,8 +70,16 @@ waitFor('body', function() {
 
     var app = {
 
-      upload_system: {
+      gtm: function(action, value) {
+        dataLayer.push({
+          event: 'user_action',
+          event_category: 'action',
+          event_action: action,
+          event_label: !!(value) ? value : 'default',
+        });
+      },
 
+      upload_system: {
         initalize: function() {
           $upload.addClass('active');
           $('.js-frames-capture', $root).find('i').attr('data-label', 'upload');
@@ -373,25 +381,25 @@ waitFor('body', function() {
     var report = {
       'browser': {
         'userMedia'   : {
-          'accept'      : function() { ga('send', 'event', 'getUserMedia', 'accept') },
-          'reject'      : function( err ) { ga('send', 'event', 'getUserMedia', 'reject', err ) },
-          'not_supported'   : function() { ga('send', 'event', 'getUserMedia', 'not-supported') },
-          'resolution_issue'  : function() { ga('send', 'event', 'getUserMedia', 'resolution-not-supported') },
+          'accept'      : function() { app.gtm('send', 'event', 'getUserMedia', 'accept') },
+          'reject'      : function( err ) { app.gtm('send', 'event', 'getUserMedia', 'reject', err ) },
+          'not_supported'   : function() { app.gtm('send', 'event', 'getUserMedia', 'not-supported') },
+          'resolution_issue'  : function() { app.gtm('send', 'event', 'getUserMedia', 'resolution-not-supported') },
         },
       },
       'app' : {
-        'capture'     : function() { ga('send', 'event', 'action', 'Capture Frame') },
-        'delete'      : function() { ga('send', 'event', 'action', 'Delete GIF') },
-        'remove'      : function() { ga('send', 'event', 'action', 'Remove Frame') },
-        'render'      : function() { ga('send', 'event', 'action', 'Render GIF') },
-        'frames'      : function( status ) { ga('send', 'event', 'action', 'Toggle Frames', status ) },
-        'preview'     : function( status ) { ga('send', 'event', 'action', 'Invert Preview', status ) },
-        'download'    : function( details ) { ga('send', 'event', 'action', 'Download GIF', details ) },
-        'speed'       : function( value ) { ga('send', 'event', 'action', 'Update GIF Speed', value ) },
-        'sort'        : function() { ga('send', 'event', 'action', 'Sort Frames' )},
-        'overlay'     : function( value ) { ga('send', 'event', 'action', 'Toggle Overlay', value ) },
-        'upload'      : function( value ) { ga('send', 'event', 'action', 'Upload Images', value )},
-        'contextmenu' : function( details ) { ga('send', 'event', 'action', 'Context Menu Open on GIF', details )}
+        'capture'     : function() { app.gtm('Capture Frame') },
+        'delete'      : function() { app.gtm('Delete GIF') },
+        'remove'      : function() { app.gtm('Remove Frame') },
+        'render'      : function() { app.gtm('Render GIF') },
+        'frames'      : function( status ) { app.gtm('Toggle Frames', status ) },
+        'preview'     : function( status ) { app.gtm('Invert Preview', status ) },
+        'download'    : function( details ) { app.gtm('Download GIF', details ) },
+        'speed'       : function( value ) { app.gtm('Update GIF Speed', value ) },
+        'sort'        : function() { app.gtm('Sort Frames' )},
+        'overlay'     : function( value ) { app.gtm('Toggle Overlay', value ) },
+        'upload'      : function( value ) { app.gtm('Upload Images', value )},
+        'contextmenu' : function( details ) { app.gtm('Context Menu Open on GIF', details )}
       }
     }
 
