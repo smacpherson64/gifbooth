@@ -1,4 +1,4 @@
-# <a href="http://sethmac.com/gifbooth/">GIFBooth (version 0.1.6)</a>
+# <a href="https://smacpherson64.github.io/gifbooth/">GIFBooth (version 0.1.6)</a>
 
 ## Description
 GIFBooth is an experiment using various Javascript API's to allow users to use live video to create animated GIFs.
