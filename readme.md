@@ -6,7 +6,7 @@ GIFBooth is an experiment, born from having fun with my son, that uses various J
 
 ## Tools
 
-* **<a href="https://github.com/40Digits/gulp-eta">Gulp ETA</a>** - An open source frontend build script developed by <a href="http://40digits.com/">40Digits</a>
+* **<a href="https://reactjs.org">React</a>**
 
 * **<a href="https://jnordberg.github.io/gif.js/">GIF.js</a>** - Javascript library for creating animated GIFs made by <a href="http://johan-nordberg.com/">Johan Nordberg</a>
 
